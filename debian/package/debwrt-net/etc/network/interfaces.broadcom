@@ -1,0 +1,108 @@
+# DebWrt Debian interfaces: broadcom
+#
+# - broadcom based devices
+# - proprietary wl kernel module driver ( prepared for b43 )
+# - nas ( prepared for hostapd )
+# - robocfg
+#
+# Tested on 
+# - Asus WL-500g Premium v1.
+# - Asus RT-N16
+#
+# note: don't forget to enable dnsmasq in /etc/defaults/dnsmasq
+#
+# Amain <amain@debwrt.net>
+
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet manual
+    pre-up    /sbin/ifconfig eth0 up
+    # robocfg:
+    pre-up    /usr/sbin/robocfg switch disable                2>/dev/null
+    pre-up    /usr/sbin/robocfg vlans enable reset            2>/dev/null
+    pre-up    /usr/sbin/robocfg vlan 1 ports "0 5t"           2>/dev/null
+    pre-up    /usr/sbin/robocfg vlan 2 ports "1 2 3 4 5t"     2>/dev/null
+    pre-up    /usr/sbin/robocfg port 0 state enabled stp none 2>/dev/null
+    pre-up    /usr/sbin/robocfg switch enable                 2>/dev/null
+    pre-up    /usr/sbin/robocfg show                          2>/dev/null
+    post-down /usr/sbin/robocfg switch disable                2>/dev/null
+    post-down /usr/sbin/robocfg vlans enable reset            2>/dev/null
+    post-down /usr/sbin/robocfg vlan 0 ports "0 1 2 3 4 5u"   2>/dev/null
+    post-down /usr/sbin/robocfg port 0 state enabled stp none 2>/dev/null
+    post-down /usr/sbin/robocfg switch enable                 2>/dev/null
+    post-down /usr/sbin/robocfg show                          2>/dev/null
+	# asus rt-n16:
+    #pre-up     modprobe switch-core; exit 0
+    #pre-up     modprobe switch-robo; exit 0
+    #pre-up     echo 1 > /proc/switch/eth0/reset
+    #pre-up     echo 1 > /proc/switch/eth0/enable_vlan
+    #pre-up     echo "0 8"       > /proc/switch/eth0/vlan/1/ports
+    #pre-up     echo "1 2 3 4 8" > /proc/switch/eth0/vlan/2/ports
+    post-down /sbin/ifconfig eth0 down
+
+auto wan
+iface wan inet manual
+    pre-up    if ! grep -q eth0 /etc/network/run/ifstate; then echo "First bring eth0 up."; false; fi
+    pre-up    /etc/firewall/firewall.sh start
+    pre-up    /sbin/ip link add link eth0 name wan type vlan id 1
+    pre-up    start-stop-daemon --start  \
+                                --oknodo \
+                                --quiet  \
+                                --pidfile /var/run/dhclient.wan.pid \
+                                --exec /sbin/dhclient \
+                                  -- -v -pf /var/run/dhclient.wan.pid -lf /var/lib/dhcp/dhclient.wan.leases -nw wan
+    post-down /sbin/ip link delete wan
+    post-down start-stop-daemon --stop \
+                                --signal HUP \
+                                --pidfile /var/run/dhclient.wan.pid \
+                                --exec /sbin/dhclient
+    post-down /etc/firewall/firewall.sh stop
+
+auto lan
+iface lan inet manual
+    pre-up    if ! grep -q eth0 /etc/network/run/ifstate; then echo "First bring eth0 up."; false; fi
+    pre-up    /sbin/ip link add link eth0 name lan type vlan id 2
+    post-down /sbin/ip link delete lan
+
+#auto wlan0
+#iface wlan0 inet manual
+#    pre-up    /sbin/ip link set wlan0 up
+#    post-up   touch /etc/network/run/wlan0
+#    post-down /sbin/ip link set wlan0 down
+#    post-down rm -f /etc/network/run/wlan0
+
+auto wl0
+iface wl0 inet manual
+    pre-up    /usr/sbin/pciunbind
+    pre-up    /usr/sbin/wlc ifname wl0 ap 1
+    pre-up    /usr/sbin/wlc ifname wl0 channel 5
+    pre-up    /usr/sbin/wlc ifname wl0 ssid DebWrt
+    pre-up    /usr/sbin/wlc ifname wl0 up
+    pre-up    /sbin/ip link set wl0 up
+    post-up   touch /etc/network/run/wl0
+    post-down /sbin/ip link set wl0 down
+    post-down /usr/sbin/wlc ifname wl0 down
+    post-down rm -f /etc/network/run/wl0
+
+auto br-lan
+iface br-lan inet static
+    bridge-ports   lan wl0
+    bridge-stp     off
+    bridge-maxwait 0
+    address        192.168.1.1
+    netmask        255.255.255.0
+    post-up        [ -f /etc/network/run/wl0 ] && \
+                      start-stop-daemon --start      \
+                                        --background \
+                                        --oknodo     \
+                                        --quiet      \
+                                        --pidfile /var/run/nas.wl0.pid \
+                                        --exec /usr/sbin/nas \
+                                          -- -P /var/run/nas.wl0.pid -H 34954 -l br-lan -i wl0 -A -m 128 -w 4 -g 3600 -k 'debwrtdebwrt' -s DebWrt
+    pre-down       [ -f /etc/network/run/wl0 ] && \
+                      start-stop-daemon --stop \
+                                        --signal HUP  \
+                                        --pidfile /var/run/nas.wl0.pid \
+                                        --exec /usr/sbin/nas 

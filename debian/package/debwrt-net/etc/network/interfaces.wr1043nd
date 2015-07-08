@@ -1,0 +1,103 @@
+# DebWrt Debian interfaces: TP-Link TL-WR1043ND
+#
+# - Atheros wireless chipset AR9100
+# - Atheros RTL8366RB switch
+# - Hostapd NO-KEY/WPA/WEP
+# - Firewall
+#
+# note: don't forget to enable dnsmasq in /etc/defaults/dnsmasq
+#
+# Madwifi drivers are disabled by default in DebWrt ( /etc/modprobe.d/debwrt.conf ). This
+# interfaces file and hostapd config files ( /etc/hostapd/* and /etc/defaults/hostapd )
+# assume the linuxwireless drivers.
+#
+# linuxwireless | ath5k, ath9k: wlan0-wlanN          | hostapd driver: nl80211
+# madwifi       | ath_pci     : wifi0-wifiN -> wlan0 | hostapd driver: madwifi
+#
+# Madwifi: When using madwifi(ath_pci) drivers instead of linuxwireles(athNx) drivers, install
+#          madwifi-tools from Debian Lenny: http://packages.debian.org/nl/lenny/madwifi-tools. Note
+#          that /etc/modprobe.d/madwifi is created when installing madwifi-tools, which disables 
+#          loading of linuxwireless drivers. This file should be removed.
+#
+#          Change driver=nl80211 to driver=madwifi in the hostap.conf file, and the
+#          appropriate lines ( wlanconfig ) in the wifi section of this interfaces file.
+#
+# Hostapd is used to setup the wireless device as an access point. Hostapd adds the
+# wireless device automatically to the lan bridge(br-lan). There are several hostapd example
+# files provided by DebWrt. See /etc/hostapd. Adjust /etc/default/hostapd to 
+# select which configuration to use. By default it is hostapd-nokey.conf.
+#
+# Amain <amain@debwrt.net> - november 2012
+
+auto lo
+iface lo inet loopback
+
+auto pre
+iface pre inet manual
+    pre-up /etc/firewall/firewall.sh start
+    pre-up /sbin/ifconfig eth0 down
+    pre-up /sbin/ifconfig wlan0 down
+    pre-up /sbin/ip link set wlan0 name wifi
+    #pre-up /sbin/ip link set eth0 name internal-switch
+    pre-up /sbin/ifconfig eth0 up
+    pre-up /sbin/ifconfig wifi up
+
+auto pre-switch
+iface pre-switch inet manual
+    pre-up    /usr/sbin/swconfig dev rtl8366rb set reset
+    pre-up    /usr/sbin/swconfig dev rtl8366rb set enable_vlan 1
+    pre-up    /usr/sbin/swconfig dev rtl8366rb vlan 1 set ports "1 2 3 4 5t"
+    pre-up    /usr/sbin/swconfig dev rtl8366rb vlan 2 set ports "0 5t"
+    pre-up    /usr/sbin/swconfig dev rtl8366rb set apply
+    pre-up    /sbin/ip link add link eth0 name lan type vlan id 1
+    pre-up    /sbin/ip link add link eth0 name wan type vlan id 2
+
+auto lan
+iface lan inet manual
+    pre-up    /sbin/ifconfig lan up
+    post-down /sbin/ifconfig lan down
+
+auto wan
+iface wan inet manual
+    pre-up    /sbin/ifconfig wan up
+    pre-up    start-stop-daemon --start  \
+                                --oknodo \
+                                --quiet  \
+                                --pidfile /var/run/dhclient.wan.pid \
+                                --exec /sbin/dhclient \
+                                  -- -v -pf /var/run/dhclient.wan.pid -lf /var/lib/dhcp/dhclient.wan.leases -nw wan
+    post-down /sbin/ifconfig wan down
+    post-down start-stop-daemon --stop \
+                                --signal HUP \
+                                --pidfile /var/run/dhclient.wan.pid \
+                                --exec /sbin/dhclient
+
+auto br-lan
+iface br-lan inet static
+    bridge-ports   lan
+    bridge-stp     off
+    bridge-maxwait 0
+    address        192.168.1.1
+    netmask        255.255.255.0
+
+auto wifi
+iface wifi inet manual
+    pre-up /sbin/ifconfig wifi up
+    pre-up /etc/init.d/hostapd start
+    post-down /etc/init.d/hostapd stop
+    post-down /sbin/ifconfig wifi down
+
+auto post-switch
+iface post-switch inet manual
+    post-down /sbin/ip link del lan
+    post-down /sbin/ip link del wan
+    post-down /usr/sbin/swconfig dev rtl8366rb set reset
+    post-down /usr/sbin/swconfig dev rtl8366rb set apply
+
+auto post
+iface post inet manual
+    post-down /sbin/ip link set wifi name wlan0
+    post-down /sbin/ifconfig eth0 down
+    post-down /sbin/ifconfig wlan0 down
+    post-down /etc/firewall/firewall.sh stop
+

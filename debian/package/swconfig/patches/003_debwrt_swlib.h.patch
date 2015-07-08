@@ -1,0 +1,19 @@
+--- swconfig-0.1/src/swlib.h.org	2010-11-06 22:50:18.543629001 +0000
++++ swconfig-0.1/src/swlib.h	2010-11-06 22:34:44.013629001 +0000
+@@ -110,7 +110,7 @@
+ struct switch_attr;
+ struct switch_port;
+ struct switch_val;
+-struct uci_package;
++/*struct uci_package;*/
+ 
+ struct switch_dev {
+ 	int id;
+@@ -228,6 +228,6 @@
+  * @dev: switch device struct
+  * @p: uci package which contains the desired global config
+  */
+-int swlib_apply_from_uci(struct switch_dev *dev, struct uci_package *p);
++/*int swlib_apply_from_uci(struct switch_dev *dev, struct uci_package *p);*/
+ 
+ #endif

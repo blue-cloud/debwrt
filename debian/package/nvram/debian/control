@@ -1,0 +1,23 @@
+Source: nvram
+Priority: extra
+Maintainer: Amain (DebWrt.net) <amain@debwrt.net>
+Build-Depends: debhelper (>= 7.0.50~)
+Standards-Version: 3.8.4
+Section: libs
+
+Package: libnvram
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Library used to read/write values from nvram of some embedded devices
+ See http://wiki.openwrt.org/OpenWrtNVRAM for more information
+ .
+ nvram is not working in kernel 2.6. Use cat /dev/mtd4 | grep -i boot for example.
+
+Package: nvram
+Section: net
+Architecture: any
+Depends: libnvram (= ${binary:Version})
+Description: Read/Write values from nvram of embedded devices
+ See http://wiki.openwrt.org/OpenWrtNVRAM for more information.
+

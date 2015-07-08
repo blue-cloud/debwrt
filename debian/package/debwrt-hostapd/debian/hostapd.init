@@ -1,0 +1,65 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:		hostapd
+# Required-Start:
+# Required-Stop:
+# Should-Start:		$local_fs
+# Should-Stop:		$local_fs
+# Default-Start:	S
+# Default-Stop:		0 6
+# X-Start-Before:	$network
+# X-Stop-After:		$network
+# Short-Description:	Advanced IEEE 802.11 management daemon
+# Description:		Userspace IEEE 802.11 AP and IEEE 802.1X/WPA/WPA2/EAP
+#			Authenticator
+### END INIT INFO
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/usr/sbin/hostapd
+NAME=hostapd
+DESC="advanced IEEE 802.11 management"
+PIDFILE=/var/run/hostapd.pid
+
+test -x $DAEMON || exit 0
+
+if [ -s /etc/default/hostapd ] ; then
+	. /etc/default/hostapd
+fi
+
+if [ -z "$DAEMON_CONF" ]; then
+	DAEMON_CONF=/etc/hostapd/hostapd-wpa.conf
+fi
+
+DAEMON_OPTS="-B -P $PIDFILE $DAEMON_OPTS $DAEMON_CONF"
+
+. /lib/lsb/init-functions
+
+case "$1" in
+  start)
+	log_daemon_msg "Starting $DESC"
+	log_progress_msg "$NAME"
+	if [ "$RUN_DAEMON" != "yes" ]; then
+		log_progress_msg "disabled via /etc/default/hostapd"
+		log_end_msg 0
+		exit 0
+	fi
+	start-stop-daemon --start --oknodo --quiet \
+		--exec $DAEMON --pidfile $PIDFILE -- $DAEMON_OPTS > /dev/null
+	log_end_msg "$?"
+	;;
+  stop)
+	log_daemon_msg "Stopping $DESC"
+	log_progress_msg "$NAME"
+	start-stop-daemon --stop --oknodo --quiet \
+		--exec $DAEMON --pidfile $PIDFILE
+	log_end_msg "$?"
+	;;
+  *)
+	N=/etc/init.d/$NAME
+	echo "Usage: $N {start|stop}" >&2
+	exit 1
+	;;
+esac
+
+exit 0

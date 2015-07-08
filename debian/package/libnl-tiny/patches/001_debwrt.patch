@@ -1,0 +1,14 @@
+--- libnl-tiny-0.1/src/Makefile.org	2010-11-06 18:41:38.526969000 +0000
++++ libnl-tiny-0.1/src/Makefile	2010-11-06 18:42:19.086969000 +0000
+@@ -1,6 +1,9 @@
+-CC=gcc
++#CC=gcc
+ WFLAGS=-Wall
+-CFLAGS=-O2
++
++#/usr/bin/ld: nl.o: relocation R_X86_64_32 against `.text' can not be used when making a shared object; recompile with -fPIC nl.o: could not read symbols: Bad value
++CFLAGS=-O2 -fPIC
++
+ INCLUDES=-Iinclude
+ 
+ LIBNAME=libnl-tiny.so

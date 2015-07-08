@@ -1,0 +1,10 @@
+--- src/src/crypto/random.org	2013-06-26 06:35:09.004352542 +0000
++++ src/src/crypto/random.c	2013-06-26 06:35:28.720353802 +0000
+@@ -24,6 +24,7 @@
+ 
+ #include "utils/includes.h"
+ #ifdef __linux__
++#define __USE_GNU
+ #include <fcntl.h>
+ #include <sys/stat.h>
+ #endif /* __linux__ */

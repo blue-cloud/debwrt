@@ -1,0 +1,50 @@
+# DebWrt - Debian on Embedded devices
+#
+# Copyright (C) 2010 Johan van Zoomeren <amain@debwrt.net>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# Kconfig documentation: http://lxr.linux.no/#linux+v2.6.34.1/Documentation/kbuild/kconfig-language.txt
+
+menu "Debian Cross-Compile Environment"
+	
+config DEBIAN_BUILDENV_REPOSITORY
+	string "Debian Repository"
+	default "http://ftp.debian.org/debian"
+	help
+	  Specify the Debian Repository used to set up de Debian Cross-Compile chroot
+	  environment and used to install Debian chroot for the target architecture.
+
+config EMDEBIAN_BUILDENV_REPOSITORY
+	string "Emdebian Repository"
+	default "http://www.emdebian.org/debian"
+	help
+	  Specify the Debian Repository used to set up de Debian Cross-Compile chroot
+	  environment and used to install Debian chroot for the target architecture.
+
+config DEBIAN_BUILDENV_INCLUDE_PACKAGES
+	string "Additional packages"
+	default "file,less,strace,sudo"
+	help
+	  Specify a comma seperated list of additional packages to install in the
+	  Debian cross-compile environment. The cross compile environment is a
+	  debootstrapped chrooted Debian sid installation.
+
+config DEBIAN_BUILDENV_QEMU_VERSION
+	string "Qemu version"
+	default "0.15.0-rc0"
+	help
+	  At least 0.12.2 is needed for mips targets.
+
+endmenu

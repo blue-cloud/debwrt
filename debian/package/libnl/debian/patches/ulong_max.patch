@@ -1,0 +1,15 @@
+
+This patch fixes DebWrt ticket #80 and #86
+
+Credits to http://bugs.gentoo.org/show_bug.cgi?id=225393
+
+--- a/include/netlink-local.h   2008-06-08 19:09:20
++++ b/include/netlink-local.h   2008-06-08 19:09:33
+@@ -26,6 +26,7 @@
+ #include <sys/socket.h>
+ #include <inttypes.h>
+ #include <assert.h>
++#include <limits.h>
+
+ #include <arpa/inet.h>
+ #include <netdb.h>

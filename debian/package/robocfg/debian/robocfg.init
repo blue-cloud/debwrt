@@ -1,0 +1,92 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          robocfg
+# Required-Start:
+# Required-Stop:
+# Default-Start:     S
+# Default-Stop:
+# Short-Description: Initialize vlan tagging on b44 ethernet switch with robocfg
+# Description:       Initialize vlan tagging on b44 ethernet switch with robocfg
+#                   
+### END INIT INFO
+
+# Author: Amain (DebWRT) <amain@debwrt.net>
+#
+
+# Old file: switch now managed from /etc/network/interfaces
+
+exit 0
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+DESC="vlan tagging on b44 ethernet switch"
+NAME=robocfg
+SCRIPTNAME=/etc/init.d/$NAME
+
+# Load the VERBOSE setting and other rcS variables
+. /lib/init/vars.sh
+
+# Define LSB log_* functions.
+# Depend on lsb-base (>= 3.0-6) to ensure that this file is present.
+. /lib/lsb/init-functions
+
+. /etc/default/robocfg
+if [ ! $ENABLED -eq 1 ]; then exit 0; fi
+
+do_start()
+{
+        if ( ls -l /etc/network/interfaces | grep firstboot >/dev/null ); then
+		log_action_end_msg 1
+		echo "FIRSTBOOT - Please configure network in /etc/network first - robocfg did not configure switch"
+		return
+	fi
+
+	# First set iface eth0 up, otherwist robocfg can't find the hardware
+	/sbin/ifconfig eth0 up
+
+	# Configure switch
+	/usr/sbin/robocfg switch disable                2>/dev/null
+	/usr/sbin/robocfg vlans enable reset            2>/dev/null
+	/usr/sbin/robocfg vlan 100 ports "0 5t"         2>/dev/null
+	/usr/sbin/robocfg vlan 101 ports "1 2 3 4 5t"   2>/dev/null
+	/usr/sbin/robocfg port 0 state enabled stp none 2>/dev/null # on some routers it seems that this iface is not up by default
+	/usr/sbin/robocfg switch enable                 2>/dev/null
+
+	# Configure vlans
+	/sbin/vconfig add eth0 100                      1>/dev/null
+	/sbin/vconfig add eth0 101                      1>/dev/null
+
+	# Configure nice names
+	/sbin/ip link set dev eth0.100 name eth0_wan
+	/sbin/ip link set dev eth0.101 name eth0_lan
+
+	log_action_end_msg 0
+}
+
+do_stop()
+{
+        if ( ls -l /etc/network/interfaces | grep firstboot >/dev/null ); then
+		log_action_end_msg 1
+		echo "FIRSTBOOT - Please configure network in /etc/network first - robocfg did not configure switch"
+		return
+	fi
+
+	/sbin/vconfig rem eth0_wan 1>/dev/null
+	/sbin/vconfig rem eth0_lan 1>/dev/null
+	/usr/sbin/robocfg switch disable vlans enable reset vlan 1 ports "0 5u" vlan 0 ports "1 2 3 4 5u" port 0 state enabled stp none switch enable 2>/dev/null
+}
+
+VERBOSE=yes
+case "$1" in
+  start)
+	log_action_begin_msg "Initializing $DESC: $NAME"
+	do_start
+	;;
+  stop)
+	log_action_begin_msg "Stopping $DESC: $NAME"
+        do_stop
+        ;;
+  *)
+	echo "Usage: $SCRIPTNAME {start}" >&2
+	exit 3
+	;;
+esac

@@ -1,0 +1,109 @@
+# DebWrt - Debian on Embedded devices
+#
+# Copyright (C) 2012 Elliott Mitchell <ehem+debwrt@m5p.com>
+#	2012-10-21  Initial version of this sample plugin.mk file.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#
+# This is an example plugin.mk file.  I'm giving examples of some conventional
+# Make constructs, rename this file to "plugin.mk" to see them in action.
+#
+
+
+#
+# This handles enabling/disabling the example plugin
+#
+ifeq ($(CONFIG_$(PLUGIN_VAR)_ENABLE),y)
+
+#
+# Here we check the UUID and configuration version from the .config.  They
+# should match us, if they don't something has happened.
+#
+ifneq ("50b4589d-6e13-4514-b57e-a7ec36e056b3",$(CONFIG_$(PLUGIN_VAR)_UUID))
+$(error Configuration for $(PLUGIN_NAME) out of date/mismatched, reconfigure to fix.)
+endif
+ifneq ("1.0",$(CONFIG_$(PLUGIN_VAR)_CONFVER))
+$(warn $(PLUGIN_NAME) is version 1.0, configuration is version $(call qstrip,$(CONFIG_$(PLUGIN_VAR)_CONFVER)), results may not be good.)
+endif
+
+#
+# This would cause our patches to be applied to the OpenWRT download, check
+# openwrt/patches/README for the naming rules (they are important!).  This will
+# apply patches in openwrt/all to function on all branches and then include
+# patches from branch-specific subdirectory.  This is eval'd since we need
+# $(PLUGIN_PATH), which references $(PLUGIN_ID) to be expanded now, while
+# $(PLUGIN_ID) is valid.
+#
+#$(eval OPENWRT_PATCH_DIRS += "$(PLUGIN_PATH)/openwrt/all" \
+#	$(PLUGIN_PATH)/openwrt/$(OPENWRT_BRANCH))
+#
+# A line like this follows the traditional behavior for plugin patches to the
+# OpenWRT build portion.  All patches in the directory will be used, but you
+# can use the filename to restrict patches to a specific OpenWRT branch (see
+# openwrt/patches/README).  This is eval'd since we need $(PLUGIN_PATH), which
+# references $(PLUGIN_ID) to be expanded now, while $(PLUGIN_ID) is valid.
+#
+#$(eval OPENWRT_PATCH_DIRS += "$(PLUGIN_PATH)/openwrt")
+
+#
+# This makes us a prerequisite of the "clean" rule, so `make clean` will cause
+# us to be invoked.
+#
+clean: $(PLUGIN_RULE)/test
+
+#
+# The end of the enable/disable construct.  Everything follows from the above,
+# pieces, disabling these two portions completely removes us from action.  Our
+# variable will still be known to Make, but unless another plugin touches it...
+#
+endif
+
+
+#
+# Create a Make variable with a random value
+#
+$(PLUGIN_VAR)_TESTVAR = some value
+
+#
+# This creates a pattern-specific Make variable, this is needed in order to
+# access our variables when the rule is used.  By the time the rule is used,
+# $(PLUGIN_ID) will no longer exist.
+#
+$(PLUGIN_RULE)/test $(PLUGIN_RULE)/unplug: PLUGIN_ID := $(PLUGIN_ID)
+
+#
+# This is our rule, it simply prints a couple strings.  This can be invoked
+# by running `make plugins/example/test` (or whatever directory we're installed
+# in).
+#
+$(PLUGIN_RULE)/test:
+	@echo I\'m located in the directory \"$(PLUGIN_NAME)\", the variable is \"$($(PLUGIN_VAR)_TESTVAR)\"\; my id is $(PLUGIN_ID)\; you are number 6
+
+#
+# This adds us as a prerequisite of the "plugins/unplug" rule.  This is for
+# removal of our plugin.  This is unconditional since if we need to remove all
+# traces of ourself, whether or not we're actually enabled in the current
+# configuration.
+#
+plugins/unplug: $(PLUGIN_RULE)/unplug
+
+#
+# If any files in the DebWRT tree were modified, we need to remove those
+# modifications now.  Since this example plugin doesn't do that, we simply
+# produce a pithy message.
+#
+$(PLUGIN_RULE)/unplug:
+	@echo Help\! Help\! I\'m being repressed\! I\'m number $(PLUGIN_ID), and I\'m being removed\!
+

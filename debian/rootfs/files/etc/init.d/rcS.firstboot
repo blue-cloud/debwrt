@@ -1,0 +1,49 @@
+#! /bin/sh
+
+### BEGIN INIT INFO
+# Provides:             rcS
+# Required-Start:       
+# Required-Stop:        
+# Default-Start:        
+# Default-Stop:         
+# Short-Description:    first boot run control start for Debwrt
+### END INIT INFO
+
+# Mount root read-write
+/bin/mount -n -o remount,rw /dev/root /
+
+# Mount proc - why not? :-)
+/bin/mount -t proc none /proc
+
+# Setup the network
+/sbin/ifconfig eth0 192.168.1.1 netmask 255.255.255.0 up
+/sbin/ifconfig eth0:1 192.168.1.20 netmask 255.255.255.0 up
+
+# Mount devpts to allow telnet and ssh logins
+/bin/mkdir -p /dev/pts/
+/bin/mount -t devpts none /dev/pts/
+
+# Run telnetd in background
+while true; do /usr/sbin/in.telnetd -debug 23; /bin/sleep 1; done&
+
+# Run SSHd in background - nice scp-ing
+/usr/sbin/sshd -D &
+
+# Setting hostnams
+/bin/hostname `cat /etc/hostname`
+
+# Run bash instead of normal boot procedure
+/bin/echo
+/bin/echo "Welcome to the DebWrt post installation!"
+/bin/echo
+/bin/echo "Press ctrl-d for normal boot. Use vim.tiny to edit files."
+/bin/echo
+/bin/echo "Note that both telnetd and sshd are running on: 192.168.1.1 and on 192.168.1.20."
+/bin/echo
+/bin/echo "Run /usr/sbin/PostInstall to complete the second stage installation"
+
+# Start bash
+/bin/bash
+
+# Normal boot procedure
+exec /etc/init.d/rc S

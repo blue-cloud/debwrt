@@ -1,0 +1,11 @@
+--- swconfig-0.1/src/swlib.c.org	2011-02-19 23:03:24.004198001 +0000
++++ swconfig-0.1/src/swlib.c	2011-02-19 23:03:57.134198001 +0000
+@@ -13,6 +13,8 @@
+  * GNU General Public License for more details.
+  */
+ 
++#define _GNU_SOURCE
++
+ #include <stdio.h>
+ #include <string.h>
+ #include <stdlib.h>

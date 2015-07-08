@@ -1,0 +1,31 @@
+Format: 1.8
+Date: Tue, 24 Dec 2013 14:28:25 +0100
+Source: mjpg-streamer
+Binary: mjpg-streamer
+Architecture: source amd64
+Version: 182-1
+Distribution: stable
+Urgency: low
+Maintainer: Johan van Zoomeren <amain@debwrt.net>
+Changed-By: Johan van Zoomeren <amain@debwrt.net>
+Description: 
+ mjpg-streamer - Stream video in MJPEG format
+Changes: 
+ mjpg-streamer (182-1) stable; urgency=low
+ .
+   * Initial release
+Checksums-Sha1: 
+ f60360be0ec287c2128e580f9345d9c873e00093 912 mjpg-streamer_182-1.dsc
+ 4319829db926f6908c16523eb022b01e125509b3 555902 mjpg-streamer_182.orig.tar.gz
+ f98b6198b7bb7668379d3612103c6d2b83c97df3 4955 mjpg-streamer_182-1.debian.tar.gz
+ f133b1ca6cf26c6e37669ff041cbb7fc2b78aeed 295562 mjpg-streamer_182-1_amd64.deb
+Checksums-Sha256: 
+ 08786b2a5dd999e79d0d1670442fe0f027b0189dbb9c46126580c1683b4ccdff 912 mjpg-streamer_182-1.dsc
+ 8bf8538bc13aea89587ef8ceef7e6d9b8fd00ed82b6c900598fa4ace9b4ec3be 555902 mjpg-streamer_182.orig.tar.gz
+ 15fb0dec5438d34fb7e502586e2f61d5d93b81c638cba8f7e81816cad4de1f5e 4955 mjpg-streamer_182-1.debian.tar.gz
+ e32efb8373646dcd2ba043fc7129dff3e309b8b58c7e191f16b961b4cfb69fe4 295562 mjpg-streamer_182-1_amd64.deb
+Files: 
+ 0a779f6968c495af1dbf10022e96f3fe 912 Video extra mjpg-streamer_182-1.dsc
+ 43a60264d89719712b466233c1146c4c 555902 Video extra mjpg-streamer_182.orig.tar.gz
+ c6e00a751ac069446f46ec07823f1b6b 4955 Video extra mjpg-streamer_182-1.debian.tar.gz
+ 4e38d8bb745d0bef04a282d1a1e71eb2 295562 Video extra mjpg-streamer_182-1_amd64.deb

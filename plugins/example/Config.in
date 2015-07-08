@@ -1,0 +1,154 @@
+# DebWrt - Debian on Embedded devices
+#
+# Copyright (C) 2012 Johan van Zoomeren <amain@debwrt.net>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# Example plugin Config.in file
+#
+# The first config option is mandatory and is in the format
+#
+# PLUGIN_<NAME>_ENABLE   ( All in uppercase )
+#
+# If your plugin is adding support for a new target platform,
+# please add deselect DO_CONF_TARGETS. This will disable the
+# conventional DebWrt Target and Target Profile menu's and allows
+# full override by the plugin.
+
+config PLUGIN_EXAMPLE_VERSION
+	string
+	default "1.0"
+
+config PLUGIN_EXAMPLE_UUID
+	string
+	default "128A6A00-29FA-11E2-81C1-0800200C9A66"
+
+if PLUGIN_EXAMPLE
+
+menu "Target Plugin Example Configuration"
+
+config PLUGIN_EXAMPLE_ENABLE
+	bool
+	default y if PLUGIN_EXAMPLE
+ 	deselect HAS_SUBTARGETS
+	deselect DO_CONF_TARGETS
+	select TARGET_example
+	select mipsel
+	help
+          Build firmware images for a...
+	  .
+	  Depending on the selected OPENWRT_BRANCH additional options become
+	  available.
+	  .
+	  When selecting this plugin, some DebWrt defaults will be overriden. And
+	  some menu's will become unavailable.
+
+config TARGET_example
+	bool
+	default n
+
+choice
+	prompt "Target Profile"
+	depends TARGET_example
+	default TARGET_example_None
+
+	config TARGET_example_None
+        	bool "Subtarget A"
+		depends TARGET_example
+		help
+		  Package set optimized for....
+
+
+	config TARGET_example_subtarget2
+		bool "Subtarget B"
+		depends TARGET_example
+		help
+		  Package set optimized for...
+
+	config TARGET_example_subtarget3
+		bool "Subtarget C"
+		depends TARGET_example
+		help
+		  Package set optimized for ...
+
+	config TARGET_example_subtarget4
+		bool "Subtarget B"
+		depends TARGET_example
+		help
+		  Package set optimized for ...
+endchoice
+
+choice
+	prompt "Plugin Version"
+	depends TARGET_example
+	default PLUGIN_EXAMPLE_VERSION_EXPERIMENTAL
+
+	config PLUGIN_EXAMPLE_VERSION_EXPERIMENTAL
+		bool "Experimental"
+		depends TARGET_example
+		depends OPENWRT_BRANCH_TRUNK
+		select PLUGIN_EXAMPLE_DISABLE_OPENWRT_REVISION_MENU
+		help
+		  Use latest experimental patches for example.
+
+	config PLUGIN_EXAMPLE_VERSION_AA
+		bool "Attitude Adjustment"
+		depends TARGET_example
+		depends OPENWRT_BRANCH_ATTITUDE_ADJUSTMENT
+		help
+		  Use latest experimental patches for example.
+
+	config PLUGIN_EXAMPLE_VERSION_2012-05-28T17-30
+		bool "2012-05-28T17-30"
+		depends TARGET_example
+		depends OPENWRT_BRANCH_TRUNK
+		help
+		  Use patches from 2012-05-28T17-30 for example.
+
+endchoice
+
+# Disable DebWrt's OPENWRT_REVISON menu
+config PLUGIN_EXAMPLE_DISABLE_OPENWRT_REVISION_MENU
+	bool
+	default n
+	depends TARGET_example
+	deselect DO_CONF_OPENWRT_REVISON
+
+# Override DebWrt default values
+if TARGET_example
+config TARGET_BOARD
+	string
+	default "example"
+
+config FLASH_IP
+	string
+	default "192.168.1.1"
+
+config OPENWRT_REVISION
+	string
+	default "r31852" if PLUGIN_EXAMPLE_VERSION_EXPERIMENTAL
+	default "HEAD"
+
+config TARGET_IMAGE_NAME_TRX 
+	string
+	default "debwrt-firmware-example-squashfs.trx"
+
+config DEFAULT_TARGET_OPTIMIZATION
+	string
+	default "-Os -pipe -mips32 -mtune=mips32 -funit-at-a-time"
+endif
+
+endmenu
+
+endif

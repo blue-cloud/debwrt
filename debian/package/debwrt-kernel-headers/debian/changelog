@@ -1,0 +1,5 @@
+debwrt-kernel-headers (2.6.32-1) stable unstable; urgency=low
+
+  * Initial Release.
+
+ -- Amain (DebWrt.net) <amain@debwrt.net>  Tue, 06 Jul 2010 21:02:43 +0000

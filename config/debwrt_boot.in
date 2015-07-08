@@ -1,0 +1,65 @@
+# DebWrt - Debian on Embedded devices
+#
+# Copyright (C) 2010 Johan van Zoomeren <amain@debwrt.net>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+menu "DebWrt Boot Options"
+
+choice
+    prompt "Boot method"
+	default BOOT_METHOD_SCRIPT
+	help
+	  Select how DebWrt should boot
+
+config BOOT_METHOD_SCRIPT
+	bool "Use DebWrt boot script"
+	help
+          Auto discover root device, optionally kexec to a alternate kernel and boot from this device.
+          .
+	  Normally DebWrt boots directly from the root= device. With this option enabled, DebWrt boots initially
+          from /dev/mtdblock2 and runs an alternate boot script (/etc/preinit). This scripts discovers block
+          devices and will look for a device with a label of DEBWRT_ROOT or fall back to /dev/sda1. And mounts it.
+          .
+          Next it will kexec to /boot/vmlinux.elf if it exits on the DEBWRT_ROOT device. 
+          .
+          After mounting ( or kexec ), a pivot_root to the DEBWRT_ROOT device is done and /sbin/init is executed.
+
+config BOOT_METHOD_DEVICE
+	bool "Directly boot from device /dev/sda1"
+
+endchoice
+
+config CMDLINE_BOOL
+	bool
+	default y
+	depends BOOT_METHOD_DEVICE
+
+#CONFIG_CMDLINE="root=/dev/sda1 init=/sbin/init rootdelay=10 noinitrd console=ttyS0,115200"
+# default "root=/dev/sda1 init=/sbin/init rootdelay=15 noinitrd console=ttyS0,115200"
+# default "root=/dev/sda1 init=/sbin/init rootdelay=15 noinitrd console=ttyS0,115200 netconsole=6665@10.0.2.1/eth0,6666@10.0.2.2"
+# TODO: use patch-kernel script to append only netconsole=6665@192.168.1.1/eth0,6666@192.168.1.2/ to OpenWrt default cmdline"
+#       for now netconsole can't be set when BOOT_METHOD_SCRIPT
+config CMDLINE
+        string "Default kernel command line"
+        default "root=/dev/sda1 init=/sbin/init rootdelay=15 noinitrd console=ttyS0,115200 netconsole=6665@192.168.1.1/eth0,6666@192.168.1.2/"
+	depends BOOT_METHOD_DEVICE
+        help
+	  Override OpenWrt default kernel command line. Tell the kernel to boot from /dev/sda1,
+	  an USB storage device. Rootdelay is specified, to give the USB storage/SCSI driver
+   	  to become ready, before the kernel tries to boot from it.
+
+source "config/kexec.in"
+
+endmenu

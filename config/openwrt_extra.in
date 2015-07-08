@@ -1,0 +1,66 @@
+# DebWrt - Debian on Embedded devices
+#
+# Copyright (C) 2010 Johan van Zoomeren <amain@debwrt.net>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+config OPENWRT_SVN_REPO_URL
+	string
+	default "svn://svn.openwrt.org/openwrt" if OPENWRT_SVN_REPO_URL_SVN
+	default "svn://svn.openwrt.org/openwrt"
+
+menu "OpenWrt Extra Options"
+
+## hmmm, wanted to find a svn mirror,  but could not :-(
+## leaving in code for future
+#choice
+#        prompt "OpenWrt SVN Repository"
+#	default OPENWRT_SVN_REPO_URL_SVN
+#
+#config OPENWRT_SVN_REPO_URL_SVN
+#        bool
+#	prompt "svn://svn.openwrt.org/openwrt" 
+#	help
+#	  Select the OpenWrt SVN Repository. 
+#          .
+#	  Select this to access then OpenWrt SVN repository using the SVN
+#          protocol
+#
+##config OPENWRT_SVN_REPO_URL_MIRROR
+##        bool
+##	prompt ""
+##	help
+##	  Access OpenWrt SVN mirror repository
+#
+#endchoice
+
+config OPENWRT_DOWNLOAD_DIR
+	string "OpenWrt alternate download directory"
+	help
+	  When checking out and building multiple revisions of OpenWrt it
+	  comes in handy to not download all required external sources over
+	  and over again, but save them in one directory. If this directory
+	  exists, during checkout, a symlink will be created to it from
+	  the build directory of the checked out revision.  Be aware that
+	  if you use a relative directory here, it must be relative to
+	  "build/openwrt-<board>-<revision>-<kernel>" and not to "."
+
+config OPENWRT_MAKE_OPTIONS
+	string "OpenWrt additional make command line options"
+    default ""
+    help
+      Add make command line options to OpenWrt. For example -j 3. Note -j does 
+      not seem to work for OpenWrt.
+
+endmenu

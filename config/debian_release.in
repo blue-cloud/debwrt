@@ -1,0 +1,8 @@
+config DEBWRT_DEBIAN_RELEASE
+        string
+        default "sid" if DEBWRT_DEBIAN_RELEASE_SID
+        default "wheezy" if DEBWRT_DEBIAN_RELEASE_WHEEZY
+        default "squeeze" if DEBWRT_DEBIAN_RELEASE_SQUEEZE
+        default "lenny" if DEBWRT_DEBIAN_RELEASE_LENNY
+        default "sid"
+

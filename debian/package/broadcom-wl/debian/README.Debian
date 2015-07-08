@@ -1,0 +1,6 @@
+broadcom-wl for Debian
+----------------------
+
+Port from OpenWrt's broadcom-wl package to Debian.
+
+ -- Amain (DebWrt.net) <amain@debwrt.net>  Fri, 27 May 2011 20:55:29 +0000

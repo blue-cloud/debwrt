@@ -1,0 +1,9 @@
+#
+# this list is during build converted with
+#   grep -v '^#' | tr '\n' , | sed -e 's/^/"/' -e 's/,$/"/' 
+# so it can and will be use as value for the parameter
+#   --include=
+# of the program
+#   debootstrap
+#
+fake-hwclock

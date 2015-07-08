@@ -1,0 +1,23 @@
+
+Welcome
+
+You managed to download the source, next steps are
+
+ make menuconfig
+ make
+
+Now you have a kernel and a rootfs
+Copy the root filesystem to a disk
+
+Flash the kernel in the debwrt device
+
+Attach the disk to the debwrt device
+
+Powercycle the debwrt device
+
+Enjoy
+
+
+P.S.
+At http://www.debwrt.net is more information
+

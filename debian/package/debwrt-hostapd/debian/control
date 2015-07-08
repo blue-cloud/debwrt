@@ -1,0 +1,18 @@
+Source: debwrt-hostapd
+Section: net
+Priority: extra
+Maintainer: Amain (DebWrt.net) <amain@debwrt.net>
+Build-Depends: debhelper (>= 7.0.50~)
+Standards-Version: 3.8.4
+
+Package: debwrt-hostapd
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Advanced IEEE 802.11 management daemon
+ hostapd is a user space daemon for access point and authentication servers. It implements IEEE 802.11
+ access point management, IEEE 802.1X/WPA/WPA2/EAP Authenticators, RADIUS client, EAP server, and 
+ RADIUS authentication server. The current version supports Linux (Host AP, madwifi, Prism54 drivers)
+ and FreeBSD (net80211).
+ .
+ This version is compiled with minimal drivers and options: nl80211 kernel driver interface and WPA
+ and WEP support.

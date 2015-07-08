@@ -1,0 +1,3 @@
+127.0.0.1	localhost.local	localhost
+192.168.1.1	debwrt.lan	debwrt
+192.168.1.2	hq.lan hq # Head Quarters, your development host

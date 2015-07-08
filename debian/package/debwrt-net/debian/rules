@@ -1,0 +1,28 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE=1
+INSTDIR=debian/debwrt-net
+
+%:
+	dh $@ 
+
+override_dh_auto_install:
+	install -o root -g root -d $(INSTDIR)/usr/sbin
+	install -o root -g root -d $(INSTDIR)/etc/network
+	install -o root -g root -d $(INSTDIR)/etc/firewall
+	install -o root -g root -d $(INSTDIR)/etc/hostapd
+	install -o root -g root -d $(INSTDIR)/etc/modprobe.d
+	install -o root -g root -d $(INSTDIR)/etc/sysctl.d
+	install -o root -g root -d $(INSTDIR)/etc/dnsmasq.d
+	install -o root -g root -d $(INSTDIR)/usr/share/doc/debwrt-net
+	install -o root -g root -m 755 usr/sbin/pciunbind              $(INSTDIR)/usr/sbin/pciunbind
+	install -o root -g root -m 644 etc/network/interfaces.broadcom $(INSTDIR)/etc/network/interfaces.broadcom
+	install -o root -g root -m 644 etc/network/interfaces.atheros  $(INSTDIR)/etc/network/interfaces.atheros
+	install -o root -g root -m 644 etc/network/interfaces.rspro    $(INSTDIR)/etc/network/interfaces.rspro
+	install -o root -g root -m 644 etc/modprobe.d/wl.conf          $(INSTDIR)/etc/modprobe.d/wl.conf
+	install -o root -g root -m 644 etc/modprobe.d/b43.conf         $(INSTDIR)/etc/modprobe.d/b43.conf
+	install -o root -g root -m 755 etc/firewall/firewall.sh        $(INSTDIR)/etc/firewall/firewall.sh
+	install -o root -g root -m 644 etc/sysctl.d/debwrt.conf        $(INSTDIR)/etc/sysctl.d/debwrt.conf
+	install -o root -g root -m 644 usr/share/doc/debwrt-net/nas    $(INSTDIR)/usr/share/doc/debwrt-net/nas
+	install -o root -g root -m 644 etc/dnsmasq.d/debwrt.conf       $(INSTDIR)/etc/dnsmasq.d/debwrt.conf
+

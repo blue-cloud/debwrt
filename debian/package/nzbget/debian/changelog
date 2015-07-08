@@ -1,0 +1,5 @@
+nzbget (0.8.0-testing~r389~Debwrt) unstable; urgency=low
+
+  * Automated packet generation
+
+ -- Amain (DebWrt.net) <amain@debwrt.net>  Sun, 05 Sep 2010 11:45:02 +0000

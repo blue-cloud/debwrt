@@ -1,0 +1,66 @@
+# DebWrt - Debian on Embedded devices
+#
+# Copyright (C) 2010 Johan van Zoomeren <amain@debwrt.net>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+source "config/debian_release.in"
+
+menu "Debian Root Filesystem"
+
+choice
+    prompt "DebWrt Debian Release"
+	default DEBWRT_DEBIAN_RELEASE_WHEEZY
+	help
+	  Select the the Debian release for the root filesystem. Also sets the build environment release.
+
+config DEBWRT_DEBIAN_RELEASE_SID
+    bool
+    prompt "Sid"
+
+config DEBWRT_DEBIAN_RELEASE_WHEEZY
+    bool
+    prompt "Wheezy"
+
+config DEBWRT_DEBIAN_RELEASE_SQUEEZE
+    bool
+    prompt "Squeeze (depricated - may not work)"
+
+config DEBWRT_DEBIAN_RELEASE_LENNY
+    bool
+    prompt "Lenny (depricated - may not work)"
+
+endchoice
+
+config DEBIAN_ROOTFS_INCLUDE_PACKAGES
+	string "Additional packages"
+	default "debian/rootfs/include_packages.list"
+	help
+	  Specify the file name of the list of additional packages
+	  to install in the Debian rootfs. 
+	  .
+	  The default file is fine.
+	  You may use as a start for your own list
+	  of additional packages.
+
+config DEBIAN_ROOTFS_QEMU_2ND_STAGE
+	bool "Use qemu to perform Debian second stage install on the host"
+	default y
+	help
+      Use qemu to perform Debian root fs second stage install on the host. This
+      eliminates the need to do the second stage install on the target device. Using
+      qemu is much faster and easier then doing 2nd stage on the target device.
+
+endmenu
+

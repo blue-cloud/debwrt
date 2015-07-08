@@ -1,0 +1,12 @@
+Source: debwrt-net
+Section: net
+Priority: extra
+Maintainer: Amain (DebWrt.net) <amain@debwrt.net>
+Build-Depends: debhelper (>= 7.0.50~)
+Standards-Version: 3.8.4
+
+Package: debwrt-net
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, robocfg (>= 1.0.1), broadcom-wl, debwrt-hostapd, swconfig, dnsmasq
+Replaces: hostapd
+Description: DebWrt network scripts

@@ -1,0 +1,375 @@
+#
+# Automatically generated make config: don't edit
+# DebWrt version: testing - 2.1-1 - [ 29 September 2012 (364) ]
+# Sat Sep 29 17:16:51 2012
+#
+CONFIG_HAVE_DOT_CONFIG=y
+CONFIG_HAS_SUBTARGETS=y
+CONFIG_BIG_ENDIAN=y
+CONFIG_mips=y
+CONFIG_ARCH="mips"
+# CONFIG_TARGET_ppc40x is not set
+# CONFIG_TARGET_ppc44x is not set
+# CONFIG_TARGET_atheros is not set
+CONFIG_TARGET_ar71xx=y
+# CONFIG_TARGET_avr32 is not set
+# CONFIG_TARGET_brcm63xx is not set
+# CONFIG_TARGET_brcm47xx is not set
+# CONFIG_TARGET_sibyte is not set
+# CONFIG_TARGET_octeon is not set
+# CONFIG_TARGET_ep93xx is not set
+# CONFIG_TARGET_cobalt is not set
+# CONFIG_TARGET_gemini is not set
+# CONFIG_TARGET_etrax is not set
+# CONFIG_TARGET_coldfire is not set
+# CONFIG_TARGET_mpc52xx is not set
+# CONFIG_TARGET_mpc83xx is not set
+# CONFIG_TARGET_mx2 is not set
+# CONFIG_TARGET_goldfish is not set
+# CONFIG_TARGET_amazon is not set
+# CONFIG_TARGET_ifxmips is not set
+# CONFIG_TARGET_adm5120 is not set
+# CONFIG_TARGET_xburst is not set
+# CONFIG_TARGET_iop32x is not set
+# CONFIG_TARGET_ixp4xx is not set
+# CONFIG_TARGET_malta is not set
+# CONFIG_TARGET_kirkwood is not set
+# CONFIG_TARGET_orion is not set
+# CONFIG_TARGET_pxa is not set
+# CONFIG_TARGET_rb532 is not set
+# CONFIG_TARGET_at91 is not set
+# CONFIG_TARGET_pxcab is not set
+# CONFIG_TARGET_rdc is not set
+# CONFIG_TARGET_au1000 is not set
+# CONFIG_TARGET_ramips is not set
+# CONFIG_TARGET_s3c24xx is not set
+# CONFIG_TARGET_ps3 is not set
+# CONFIG_TARGET_ar7 is not set
+# CONFIG_TARGET_omap35xx is not set
+# CONFIG_TARGET_ubicom32 is not set
+# CONFIG_TARGET_uml is not set
+# CONFIG_TARGET_x86 is not set
+# CONFIG_TARGET_au1000_au1500 is not set
+# CONFIG_TARGET_au1000_au1550 is not set
+# CONFIG_TARGET_xburst_qi_lb60 is not set
+# CONFIG_TARGET_xburst_n516 is not set
+# CONFIG_TARGET_xburst_n526 is not set
+# CONFIG_TARGET_orion_generic is not set
+# CONFIG_TARGET_orion_harddisk is not set
+# CONFIG_TARGET_ixp4xx_generic is not set
+# CONFIG_TARGET_ixp4xx_harddisk is not set
+# CONFIG_TARGET_malta_le is not set
+# CONFIG_TARGET_malta_be is not set
+# CONFIG_TARGET_x86_generic is not set
+# CONFIG_TARGET_x86_olpc is not set
+# CONFIG_TARGET_x86_xen_domu is not set
+# CONFIG_TARGET_x86_ep80579 is not set
+# CONFIG_TARGET_x86_net5501 is not set
+CONFIG_TARGET_ar71xx_generic=y
+# CONFIG_TARGET_ar71xx_nand is not set
+# CONFIG_TARGET_ifxmips_danube is not set
+# CONFIG_TARGET_ifxmips_ar9 is not set
+# CONFIG_TARGET_ps3_petitboot is not set
+# CONFIG_TARGET_ramips_rt288x is not set
+# CONFIG_TARGET_ramips_rt305x is not set
+# CONFIG_TARGET_adm5120_router_le is not set
+# CONFIG_TARGET_adm5120_router_be is not set
+# CONFIG_TARGET_omap35xx_beagleboard is not set
+# CONFIG_TARGET_omap35xx_gumstix is not set
+# CONFIG_TARGET_pxcab_Default is not set
+# CONFIG_TARGET_iop32x_Default is not set
+# CONFIG_TARGET_au1000_au1500_Atheros is not set
+# CONFIG_TARGET_au1000_au1500_InternetBox is not set
+# CONFIG_TARGET_au1000_au1500_MeshCube is not set
+# CONFIG_TARGET_au1000_au1550_DBAu1550 is not set
+# CONFIG_TARGET_coldfire_Default is not set
+# CONFIG_TARGET_ubicom32_Default is not set
+# CONFIG_TARGET_sibyte_Default is not set
+# CONFIG_TARGET_cobalt_Default is not set
+# CONFIG_TARGET_kirkwood_Default is not set
+# CONFIG_TARGET_xburst_qi_lb60_Default is not set
+# CONFIG_TARGET_xburst_n516_Default is not set
+# CONFIG_TARGET_xburst_n526_Default is not set
+# CONFIG_TARGET_ppc44x_Default is not set
+# CONFIG_TARGET_rb532_Default is not set
+# CONFIG_TARGET_orion_generic_Default is not set
+# CONFIG_TARGET_orion_harddisk_Default is not set
+# CONFIG_TARGET_avr32_Default is not set
+# CONFIG_TARGET_atheros_Default is not set
+# CONFIG_TARGET_ixp4xx_generic_Default is not set
+# CONFIG_TARGET_ixp4xx_generic_Atheros-ath5k is not set
+# CONFIG_TARGET_ixp4xx_generic_NSLU2 is not set
+# CONFIG_TARGET_ixp4xx_generic_NAS100d is not set
+# CONFIG_TARGET_ixp4xx_generic_DSMG600RevA is not set
+# CONFIG_TARGET_ixp4xx_generic_USR8200 is not set
+# CONFIG_TARGET_ixp4xx_harddisk_FSG3 is not set
+# CONFIG_TARGET_ep93xx_Default is not set
+# CONFIG_TARGET_s3c24xx_openmoko-gta02-minimal is not set
+# CONFIG_TARGET_s3c24xx_openmoko-gta02-full is not set
+# CONFIG_TARGET_gemini_Default is not set
+# CONFIG_TARGET_ppc40x_Default is not set
+# CONFIG_TARGET_etrax_default is not set
+# CONFIG_TARGET_etrax_vhdl_no_fb is not set
+# CONFIG_TARGET_uml_Default is not set
+# CONFIG_TARGET_mpc52xx_Default is not set
+# CONFIG_TARGET_pxa_Default is not set
+# CONFIG_TARGET_brcm47xx_Broadcom-b43 is not set
+# CONFIG_TARGET_brcm47xx_Broadcom-wl is not set
+# CONFIG_TARGET_brcm47xx_Atheros is not set
+# CONFIG_TARGET_brcm47xx_Atheros-ath5k is not set
+# CONFIG_TARGET_brcm47xx_None is not set
+# CONFIG_TARGET_brcm47xx_WGT634U is not set
+# CONFIG_TARGET_brcm47xx_WL500GPv1 is not set
+# CONFIG_TARGET_brcm47xx_WRT350Nv1 is not set
+# CONFIG_TARGET_brcm47xx_WRTSL54GS is not set
+# CONFIG_TARGET_at91_Default is not set
+# CONFIG_TARGET_malta_le_Default is not set
+# CONFIG_TARGET_malta_be_Default is not set
+# CONFIG_TARGET_x86_generic_Generic is not set
+# CONFIG_TARGET_x86_generic_Alix is not set
+# CONFIG_TARGET_x86_generic_Soekris45xx is not set
+# CONFIG_TARGET_x86_generic_Soekris48xx is not set
+# CONFIG_TARGET_x86_generic_Wrap is not set
+# CONFIG_TARGET_x86_olpc_Default is not set
+# CONFIG_TARGET_x86_xen_domu_Default is not set
+# CONFIG_TARGET_x86_ep80579_Default is not set
+# CONFIG_TARGET_x86_net5501_Default is not set
+# CONFIG_TARGET_brcm63xx_Broadcom-wl is not set
+# CONFIG_TARGET_brcm63xx_Broadcom is not set
+# CONFIG_TARGET_brcm63xx_Atheros is not set
+# CONFIG_TARGET_brcm63xx_Ralink is not set
+# CONFIG_TARGET_brcm63xx_NoWiFi is not set
+# CONFIG_TARGET_brcm63xx_GW6X00 is not set
+# CONFIG_TARGET_ar71xx_generic_Default is not set
+# CONFIG_TARGET_ar71xx_generic_Minimal is not set
+# CONFIG_TARGET_ar71xx_generic_Madwifi is not set
+# CONFIG_TARGET_ar71xx_generic_AP81 is not set
+# CONFIG_TARGET_ar71xx_generic_AP83 is not set
+# CONFIG_TARGET_ar71xx_generic_PB42 is not set
+# CONFIG_TARGET_ar71xx_generic_PB44 is not set
+# CONFIG_TARGET_ar71xx_generic_PB92 is not set
+# CONFIG_TARGET_ar71xx_generic_A02RBW300N is not set
+# CONFIG_TARGET_ar71xx_generic_WZRHPG300NH is not set
+# CONFIG_TARGET_ar71xx_generic_WP543 is not set
+# CONFIG_TARGET_ar71xx_generic_DIR600A1 is not set
+# CONFIG_TARGET_ar71xx_generic_DIR615C1 is not set
+# CONFIG_TARGET_ar71xx_generic_DIR825B1 is not set
+# CONFIG_TARGET_ar71xx_generic_WRT160NL is not set
+# CONFIG_TARGET_ar71xx_generic_WRT400N is not set
+# CONFIG_TARGET_ar71xx_generic_WNDR3700 is not set
+# CONFIG_TARGET_ar71xx_generic_MZKW04NU is not set
+# CONFIG_TARGET_ar71xx_generic_MZKW300NH is not set
+# CONFIG_TARGET_ar71xx_generic_TLWR741NDV1 is not set
+# CONFIG_TARGET_ar71xx_generic_TLWR841NV15 is not set
+# CONFIG_TARGET_ar71xx_generic_TLWR841NDV3 is not set
+# CONFIG_TARGET_ar71xx_generic_TLWR841NDV5 is not set
+# CONFIG_TARGET_ar71xx_generic_TLWR941NDV2 is not set
+# CONFIG_TARGET_ar71xx_generic_TLWR941NDV3 is not set
+# CONFIG_TARGET_ar71xx_generic_TLWR941NDV4 is not set
+# CONFIG_TARGET_ar71xx_generic_TLWR1043NDV1 is not set
+# CONFIG_TARGET_ar71xx_generic_TEW632BRP is not set
+# CONFIG_TARGET_ar71xx_generic_TEW652BRP is not set
+# CONFIG_TARGET_ar71xx_generic_UBNTRS is not set
+CONFIG_TARGET_ar71xx_generic_UBNTRSPRO=y
+# CONFIG_TARGET_ar71xx_generic_UBNT is not set
+# CONFIG_TARGET_ar71xx_generic_NBG_460N_550N_550NH is not set
+# CONFIG_TARGET_ar71xx_nand_DefaultNoWifi is not set
+# CONFIG_TARGET_ar71xx_nand_Madwifi is not set
+# CONFIG_TARGET_goldfish_Default is not set
+# CONFIG_TARGET_ifxmips_danube_None is not set
+# CONFIG_TARGET_ifxmips_danube_Atheros is not set
+# CONFIG_TARGET_ifxmips_danube_Ralink is not set
+# CONFIG_TARGET_ifxmips_ar9_None is not set
+# CONFIG_TARGET_ifxmips_ar9_Atheros is not set
+# CONFIG_TARGET_ifxmips_ar9_Ralink is not set
+# CONFIG_TARGET_ps3_petitboot_Default is not set
+# CONFIG_TARGET_ramips_rt288x_Default is not set
+# CONFIG_TARGET_ramips_rt305x_Default is not set
+# CONFIG_TARGET_mpc83xx_Default is not set
+# CONFIG_TARGET_rdc_ar525w is not set
+# CONFIG_TARGET_rdc_bifferboard is not set
+# CONFIG_TARGET_rdc_r8610 is not set
+# CONFIG_TARGET_rdc_sitecom is not set
+# CONFIG_TARGET_octeon_generic is not set
+# CONFIG_TARGET_octeon_mototech is not set
+# CONFIG_TARGET_mx2_Default is not set
+# CONFIG_TARGET_ar7_Annex-A is not set
+# CONFIG_TARGET_ar7_Annex-B is not set
+# CONFIG_TARGET_ar7_Texas is not set
+# CONFIG_TARGET_ar7_None is not set
+# CONFIG_TARGET_adm5120_router_le_Generic is not set
+# CONFIG_TARGET_adm5120_router_le_CAS630 is not set
+# CONFIG_TARGET_adm5120_router_le_CAS630W is not set
+# CONFIG_TARGET_adm5120_router_le_CAS670 is not set
+# CONFIG_TARGET_adm5120_router_le_CAS670W is not set
+# CONFIG_TARGET_adm5120_router_le_CAS700 is not set
+# CONFIG_TARGET_adm5120_router_le_CAS700W is not set
+# CONFIG_TARGET_adm5120_router_le_CAS771 is not set
+# CONFIG_TARGET_adm5120_router_le_CAS771W is not set
+# CONFIG_TARGET_adm5120_router_le_CAS790 is not set
+# CONFIG_TARGET_adm5120_router_le_CAS861 is not set
+# CONFIG_TARGET_adm5120_router_le_CAS861W is not set
+# CONFIG_TARGET_adm5120_router_le_NFS101U is not set
+# CONFIG_TARGET_adm5120_router_le_NFS101WU is not set
+# CONFIG_TARGET_adm5120_router_le_NP27G is not set
+# CONFIG_TARGET_adm5120_router_le_NP28G is not set
+# CONFIG_TARGET_adm5120_router_le_WP54 is not set
+# CONFIG_TARGET_adm5120_router_le_BR6104K is not set
+# CONFIG_TARGET_adm5120_router_le_BR6104KP is not set
+# CONFIG_TARGET_adm5120_router_le_BR6104WG is not set
+# CONFIG_TARGET_adm5120_router_le_BR6114WG is not set
+# CONFIG_TARGET_adm5120_router_le_EASY5120RT is not set
+# CONFIG_TARGET_adm5120_router_le_EASY5120PATA is not set
+# CONFIG_TARGET_adm5120_router_le_PMUGW is not set
+# CONFIG_TARGET_adm5120_router_le_5GXI is not set
+# CONFIG_TARGET_adm5120_router_le_RouterBoard is not set
+# CONFIG_TARGET_adm5120_router_be_Generic is not set
+# CONFIG_TARGET_adm5120_router_be_P334WT is not set
+# CONFIG_TARGET_adm5120_router_be_P335WT is not set
+# CONFIG_TARGET_amazon_Default is not set
+# CONFIG_TARGET_omap35xx_beagleboard_Beagleboard is not set
+# CONFIG_TARGET_omap35xx_gumstix_Gumstix is not set
+CONFIG_TARGET_BOARD="ar71xx"
+CONFIG_DEFAULT_TARGET_OPTIMIZATION="-Os -pipe -mips32r2 -mtune=mips32r2 -funit-at-a-time"
+CONFIG_DEBWRT_TARGET_IMAGE_NAME_BIN="openwrt-ar71xx-generic-ubnt-rspro-squashfs-factory.bin"
+CONFIG_DEBWRT_TARGET_IMAGE_NAME_TRX="unknown"
+CONFIG_FLASH_IP="unknown"
+# CONFIG_OPENWRT_BRANCH_TRUNK is not set
+CONFIG_OPENWRT_BRANCH_ATTITUDE_ADJUSTMENT=y
+# CONFIG_OPENWRT_BRANCH_BACKFIRE is not set
+# CONFIG_OPENWRT_BRANCH_OTHER is not set
+CONFIG_OPENWRT_BRANCH="attitude_adjustment"
+CONFIG_OPENWRT_REVISION="HEAD"
+CONFIG_DEBWRT_KERNEL_DEFAULT=y
+CONFIG_DEBWRT_KERNEL_VERSION="default"
+
+#
+# Kernel Configuration
+#
+
+#
+# General configuration
+#
+CONFIG_MIPS_FPU_EMU=y
+CONFIG_INOTIFY=y
+CONFIG_INOTIFY_USER=y
+CONFIG_BLK_DEV_LOOP=y
+
+#
+# IDE Configuration
+#
+CONFIG_IDEPCI_PCIBUS_ORDER=y
+CONFIG_IDE_XFER_MODE=y
+CONFIG_BLK_DEV_IDEDMA_SFF=y
+CONFIG_BLK_DEV_IDEPCI=y
+CONFIG_BLK_DEV_IDEDMA_PCI=y
+CONFIG_BLK_DEV_IDEDMA=y
+# CONFIG_IDE_GD_ATAPI is not set
+CONFIG_IDE=y
+CONFIG_IDE_GD=y
+CONFIG_IDE_GD_ATA=y
+CONFIG_IDE_PROC_FS=y
+CONFIG_BLK_DEV_PDC202XX_OLD=y
+
+#
+# SCSI configuration
+#
+CONFIG_SCSI=y
+CONFIG_SCSI_DMA=y
+CONFIG_SCSI_PROC_FS=y
+# CONFIG_SCSI_WAIT_SCAN is not set
+CONFIG_BLK_DEV_SD=y
+
+#
+# USB configuration
+#
+CONFIG_USB=y
+# CONFIG_USB_DEBUG is not set
+CONFIG_USB_ANNOUNCE_NEW_DEVICES=y
+CONFIG_USB_DEVICEFS=y
+CONFIG_USB_DEVICE_CLASS=y
+CONFIG_USB_MON=y
+CONFIG_USB_EHCI_HCD=y
+CONFIG_USB_OHCI_HCD=y
+CONFIG_USB_UHCI_HCD=y
+CONFIG_USB_EHCI_AR71XX=y
+CONFIG_USB_OHCI_AR71XX=y
+# CONFIG_USB_EHCI_ROOT_HUB_TT is not set
+CONFIG_USB_STORAGE=y
+
+#
+# Filesystem support
+#
+CONFIG_EXT3_FS=y
+# CONFIG_EXT3_DEFAULTS_TO_ORDERED is not set
+CONFIG_EXT3_FS_XATTR=y
+# CONFIG_EXT3_FS_POSIX_ACL is not set
+# CONFIG_EXT3_FS_SECURITY is not set
+CONFIG_FS_POSIX_ACL=y
+CONFIG_JBD=y
+CONFIG_FS_MBCACHE=y
+
+#
+# OpenWrt Kernel Module Packages
+#
+
+#
+# Wireless Kernel Modules
+#
+CONFIG_PACKAGE_kmod-ath5k=y
+CONFIG_PACKAGE_kmod-ath9k=y
+CONFIG_PACKAGE_kmod-madwifi=y
+CONFIG_PACKAGE_kmod-b43=y
+CONFIG_PACKAGE_kmod-b43legacy=y
+CONFIG_PACKAGE_kmod-rt2500-pci=y
+CONFIG_PACKAGE_kmod-rt2500-usb=y
+CONFIG_NETCONSOLE=y
+# CONFIG_NETCONSOLE_DYNAMIC is not set
+# CONFIG_NETPOLL_TRAP is not set
+
+#
+# Debian Cross-Compile Environment Configuration
+#
+CONFIG_DEBIAN_BUILDENV_REPOSITORY="http://localhost:3142/ftp.debian.org/debian"
+CONFIG_EMDEBIAN_BUILDENV_REPOSITORY="http://localhost:3142/www.emdebian.org/debian"
+CONFIG_DEBIAN_BUILDENV_INCLUDE_PACKAGES="file,less,strace,sudo"
+CONFIG_DEBIAN_BUILDENV_QEMU_VERSION="0.15.0-rc0"
+CONFIG_DEBWRT_DEBIAN_RELEASE="wheezy"
+
+#
+# Debian Root Filesystem Configuration
+#
+# CONFIG_DEBWRT_DEBIAN_RELEASE_SID is not set
+CONFIG_DEBWRT_DEBIAN_RELEASE_WHEEZY=y
+# CONFIG_DEBWRT_DEBIAN_RELEASE_SQUEEZE is not set
+# CONFIG_DEBWRT_DEBIAN_RELEASE_LENNY is not set
+CONFIG_DEBIAN_ROOTFS_INCLUDE_PACKAGES="debian/rootfs/include_packages.list"
+CONFIG_DEBIAN_ROOTFS_QEMU_2ND_STAGE=y
+
+#
+# DebWrt boot options
+#
+CONFIG_BOOT_METHOD_SCRIPT=y
+# CONFIG_BOOT_METHOD_DEVICE is not set
+CONFIG_KEXEC=y
+CONFIG_PACKAGE_block-mount=y
+CONFIG_PACKAGE_busybox=y
+CONFIG_PACKAGE_hotplug2=y
+CONFIG_PACKAGE_libc=y
+CONFIG_PACKAGE_libgcc=y
+CONFIG_PACKAGE_libpthread=y
+CONFIG_PACKAGE_mtd=y
+CONFIG_PACKAGE_nvram=y
+CONFIG_PACKAGE_libblkid=y
+CONFIG_PACKAGE_libcom_err=y
+CONFIG_PACKAGE_libext2fs=y
+CONFIG_PACKAGE_libuuid=y
+CONFIG_PACKAGE_zlib=y
+CONFIG_PACKAGE_blkid=y
+CONFIG_PACKAGE_e2fsprogs=y
+CONFIG_PACKAGE_uuidgen=y
+CONFIG_PACKAGE_swap-utils=y
+CONFIG_PACKAGE_kexec-tools=y
+CONFIG_PACKAGE_mount-utils=y
+CONFIG_OPENWRT_DOWNLOAD_DIR="~/dl"
+CONFIG_OPENWRT_MAKE_OPTIONS=""

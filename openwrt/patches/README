@@ -1,0 +1,65 @@
+DebWrt patch subsystem to patch OpenWrt
+
+Reworked by ehem since r349. Thanks!
+
+all/	  Patches that apply to all branches of OpenWrt
+trunk/    Patches that apply only to OpenWrt trunk
+backfire/ Patches that apply only to OpenWrt backfire branch
+
+Patches in these directories must have filenames of the form:
+
+<nnn>_<desc>
+	Apply patch to all revisions
+<nnn>[-<branch>][-[<first>]:[<last>]]_<desc>
+	The portions in brackets [] are optional.  If present, <branch> will
+	cause the patch to only be applied to the indicated branch of OpenWrt,
+	"all" will make it applIy to all branches.  <first> and <last> are used
+	to indicate an inclusive range of OpenWrt revisions which the patch
+	applies to.  If <last> is omitted, it will be applied to all revisions
+	after <first>.  If <first> is omitted, it will be applied to all
+	revisions before <last>.  If <first> equals <last>, it will be applied
+	to that single revision.  If <first> is greater than <last>, it will
+	never be used.
+
+
+<nnn>  is used to set order of application. Lower numbered patches are applied
+       first.  The ordering is done by running the list of patches through
+       `sort`, as a result,  "1000_foo" will be done before "200_bar".  The
+       branch and revision tags are removed prior sorting, so they will not
+       influence the order of application.  Note that all patches in all patch
+       directories are listed, sorted and then applied as a single group in one
+       pass!
+
+<desc> contains a functional description of the patch. Usually separated by
+       underscores.
+
+Minor technical note: The script is actually trying to parse everything up to
+the first underscore. Everything after that is ignored.
+
+
+Patches are applied inside the checked out OpenWRT using `patch -p1`.  Most
+patches are distributed with this level of prefix.  If you encounter one that
+was setup for application using `patch -p0`, the following command can be
+used to remedy the situation:
+`sed -e's/^\(\(+++\)\|\(---\)\) /\1 openwrt\//' -i`
+
+
+Patch make targets
+------------------
+make openwrt/patch		- Exit when a patch fails
+maken openwrt/unpatch		- Exit when an unpatch fails
+make openwrt/patch/force	- Try to apply all patches
+maken openwrt/unpatch/force	- Try to unapply all patches
+
+The force options are very usefull when developping.
+
+
+Create new patch example
+------------------------
+cd build/openwrt-<...>/
+wget -O packages/broadcom-wl/patches/999_remove_IRWF_SAMPLE_RANDOM \ 
+        https://dev.openwrt.org/raw-attachment/ticket/12248/remove_IRWF_SAMPLE_RANDOM.patch
+diff -Nu packages/broadcom-wl/patchesnew/999_remove_IRWF_SAMPLE_RANDOM \
+         packages/broadcom-wl/patches/999_remove_IRWF_SAMPLE_RANDOM \
+         > ../../030-33559:_broadcom-wl_remove_IRWF_SAMPLE_RANDOM.patch
+

@@ -1,0 +1,68 @@
+#!/bin/bash
+#
+# DebWrt PostInstall
+#
+# Copyright (C) 2011 Geert Stappers  <stappers@stappers.nl>
+# Copyright (C) 2011 Johan van Zoomeren <amain@debwrt.net>
+#
+# Licenced GNU General Public License v2
+
+# hack for Debian sid
+[ -e /var/run/sshd ] && mv /var/run/sshd /tmp
+
+if [ -x /debootstrap/debootstrap ] ; then
+  echo "I: Running second stage of debootstap (may take some time)"
+  /debootstrap/debootstrap --second-stage
+
+  echo "I: Cleaning up /var/cache/apt/archives"
+  rm -rf /var/cache/apt/archives
+  mkdir -p /var/cache/apt/archives/partial
+else
+  echo "W: No debootstrap executable found, assuming 'second stage debootstrap' is allready done"
+fi
+
+# hack for Debian sid
+[ -e /tmp/sshd -a ! -e /var/run/sshd ] && mv /tmp/sshd /var/run
+
+if [ ! -s /etc/apt/sources.list ]; then
+   debian_release=$( cat /etc/debian_release )
+   echo "I: setting up /etc/apt/sources.list for ${debian_release}"
+   cat >/etc/apt/sources.list <<EOF
+deb http://ftp.debian.org/debian ${debian_release} main
+EOF
+fi
+
+if [ -f /etc/init.d/rcS ] ; then
+  # the symbolic link to /etc/init.d/rcS.firstboot is gone
+  if ! diff -q /etc/init.d/rcS /etc/init.d/rcS.debian; then
+    # they are equal
+    rm /etc/init.d/rcS.debian
+  fi
+fi
+
+if [ $(find /lib/modules/ -maxdepth 1 -mindepth 1 -type d | wc -l) -lt 1 ]
+then
+  cat << HERE
+
+W: No kernel modules directory found in /lib/modules.
+   See /lib/modules/debwrt.README for more information.
+
+HERE
+fi
+
+if [ -x /usr/sbin/in.telnetd ] ; then
+  echo "W: telnet daemon programm found, consider uninstalling it."
+  echo
+fi
+
+# note: This program did NOT check NOR setup network switch configuration
+
+echo -n "I: syncing disks...."
+sync
+echo "done"
+echo
+
+cat <<EOF
+I: Next step is configuring the network and run apt-get update. Have fun!!
+
+EOF

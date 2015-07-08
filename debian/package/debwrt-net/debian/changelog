@@ -1,0 +1,23 @@
+debwrt-net (0.4) stable; urgency=low
+
+  * Change dependancy from hostapd to debwrt-hostapd
+
+ -- Amain (DebWrt.net) <amain@debwrt.net>  Thu, 05 Dec 2013 22:28:00 +0000
+
+debwrt-net (0.3) stable; urgency=low
+
+  * Fix bug 267: install missing network config files
+
+ -- Amain (DebWrt.net) <amain@debwrt.net>  Wed, 20 Jun 2012 20:19:00 +0000
+
+debwrt-net (0.2) stable; urgency=low
+
+  * Add support for Asus RT-N16
+
+ -- Amain (DebWrt.net) <amain@debwrt.net>  Sun, 7 Aug 2011 20:07:31 +0000
+
+debwrt-net (0.1) stable; urgency=low
+
+  * Initial Release. Broadcom full AP/router/firewall functionality using proprietary driver.
+
+ -- Amain (DebWrt.net) <amain@debwrt.net>  Sun, 24 Jul 2011 11:49:43 +0000

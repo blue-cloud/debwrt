@@ -1,0 +1,3 @@
+#!/bin/sh
+
+/usr/bin/led 0.25

@@ -1,0 +1,93 @@
+choice
+	prompt "OpenWrt Branch"
+	default OPENWRT_BRANCH_TRUNK
+	help
+		Choose the branch of OpenWRT to build from. Most often this will be
+		OpenWRT's trunk, but there could be reasons to use another branch. If you
+		want to use a branch beside these two, choose OTHER and specify below.
+
+	config OPENWRT_BRANCH_TRUNK
+		bool "trunk"
+
+	config OPENWRT_BRANCH_ATTITUDE_ADJUSTMENT
+		bool "attitude_adjustment"
+
+	config OPENWRT_BRANCH_BACKFIRE
+		bool "backfire ( not tested recently )"
+
+	config OPENWRT_BRANCH_OTHER
+		bool "other branch (or tag) ( specify below )"
+endchoice
+
+if OPENWRT_BRANCH_OTHER
+config OPENWRT_BRANCH
+	string "Other OpenWRT Branch"
+	help
+		Specify what branch you wish to use. You can even specify "trunk" or
+		"backfire" here, but you generally choose those above.
+
+endif
+# sigh, no else statement in this grammer
+if !OPENWRT_BRANCH_OTHER
+config OPENWRT_BRANCH
+	string
+		default "trunk" if OPENWRT_BRANCH_TRUNK
+		default "attitude_adjustment" if OPENWRT_BRANCH_ATTITUDE_ADJUSTMENT
+		default "backfire" if OPENWRT_BRANCH_BACKFIRE
+		default "unset"
+endif
+
+if !OPENWRT_BRANCH_TRUNK
+choice
+	prompt "OpenWrt Release Tag"
+	help
+		Specify an OpenWrt release tag to build. Alternatively you can
+		specify a Subversion revision below.
+
+if OPENWRT_BRANCH_ATTITUDE_ADJUSTMENT
+	config OPENWRT_TAG_ATTITUDE_ADJUSTMENT_12_09
+		deselect DO_CONF_OPENWRT_REVISON
+		bool "attitude_adjustment_12.09"
+endif
+if OPENWRT_BRANCH_BACKFIRE
+	config OPENWRT_TAG_BACKFIRE_10_03_1
+		deselect DO_CONF_OPENWRT_REVISON
+		bool "backfire_10.03.1"
+
+	config OPENWRT_TAG_BACKFIRE_10_03
+		deselect DO_CONF_OPENWRT_REVISON
+		bool "backfire_10.03"
+endif
+	config OPENWRT_TAG_NONE
+		bool "none"
+endchoice
+
+config OPENWRT_TAG
+	string
+		default "attitude_adjustment_12.09" if OPENWRT_TAG_ATTITUDE_ADJUSTMENT_12_09
+		default "backfire_10.03" if OPENWRT_TAG_BACKFIRE_10_03
+		default "backfire_10.03.1" if OPENWRT_TAG_BACKFIRE_10_03_1
+		default ""
+
+if !OPENWRT_TAG_NONE
+config OPENWRT_REVISION
+	default "HEAD"
+endif
+
+endif
+
+if DO_CONF_OPENWRT_REVISON
+config OPENWRT_REVISION
+	string "OpenWRT Revision"
+		default "HEAD"
+	help
+		This sets the revision of the OpenWRT branch that should be used.
+		Sometimes changes at the head of a branch may break DebWRT, and this
+		allows you to specify an earlier revision that still works.
+
+		This may also be used by some plugins that target specific revision of
+		OpenWRT.
+  
+                The revision number is directy feeded to `svn co -r XXXXX`.
+endif
+

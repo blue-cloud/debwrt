@@ -1,0 +1,52 @@
+--- Bitten-0.7dev_r1011-py2.6.egg/bitten/slave.py.org	2012-10-10 10:03:05.000000000 +0000
++++ Bitten-0.7dev_r1011-py2.6.egg/bitten/slave.py	2012-10-10 10:18:53.000000000 +0000
+@@ -190,7 +190,7 @@
+                  keep_files=False, single_build=False,
+                  poll_interval=300, keepalive_interval = 60,
+                  username=None, password=None,
+-                 dump_reports=False, no_loop=False, form_auth=False):
++                 dump_reports=False, no_loop=False, form_auth=False, exit_no_pending=False):
+         """Create the build slave instance.
+         
+         :param urls: a list of URLs of the build masters to connect to, or a
+@@ -251,6 +251,7 @@
+         self.cookiejar = cookielib.CookieJar()
+         self.username = username \
+                         or self.config['authentication.username'] or ''
++	self.exit_no_pending = exit_no_pending;
+ 
+         if not self.local:
+             self.password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
+@@ -392,8 +393,12 @@
+             self._initiate_build(resp.info().get('location'))
+             return True
+         elif resp.code == 204:
+-            log.info('No pending builds')
+-            return False
++	    if self.exit_no_pending == True:
++            	log.info('No pending builds')
++	        raise ExitSlave(EX_OK)
++	    else:
++            	log.info('No pending builds')
++                return False
+         else:
+             log.error('Unexpected response (%d %s)', resp.code, resp.msg)
+             raise ExitSlave(EX_PROTOCOL)
+@@ -598,6 +603,8 @@
+                      const=logging.WARN, help='print as little as possible')
+     group.add_option('--dump-reports', action='store_true', dest='dump_reports',
+                      help='whether report data should be printed')
++    group.add_option('-e', '--exit-no-pending', action='store_true', dest='exit_no_pending',
++                     help='exit if no builds pending')
+ 
+     parser.set_defaults(dry_run=False, keep_files=False,
+                         loglevel=logging.INFO, single_build=False, no_loop=False,
+@@ -639,7 +646,7 @@
+                        keepalive_interval=options.keepalive_interval,
+                        username=options.username, password=options.password,
+                        dump_reports=options.dump_reports,
+-                       form_auth=options.form_auth)
++                       form_auth=options.form_auth,exit_no_pending=options.exit_no_pending)
+         try:
+             exit_code = slave.run()
+         except KeyboardInterrupt:

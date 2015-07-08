@@ -1,0 +1,14 @@
+--- openwrt/include/toplevel.mk.org	2010-01-02 00:28:44.000000000 +0100
++++ openwrt/include/toplevel.mk	2010-01-02 00:14:07.000000000 +0100
+@@ -49,6 +49,11 @@
+ 		f=tmp/.$${type}info; t=tmp/.config-$${type}.in; \
+ 		[ "$$t" -nt "$$f" ] || ./scripts/metadata.pl $${type}_config "$$f" > "$$t" || { rm -f "$$t"; echo "Failed to build $$t"; false; break; }; \
+ 	done
++	# DebWrt: we don't need to build any packages by default, so we disable them 
++	#         all. This allows us to have fine control over which packages we
++	#         want to build.
++	sed 's/default [ynm]/default n/g' tmp/.config-package.in > tmp/.config-package.in.new
++	mv tmp/.config-package.in.new tmp/.config-package.in
+ 	./scripts/metadata.pl package_mk tmp/.packageinfo > tmp/.packagedeps || { rm -f tmp/.packagedeps; false; }
+ 	touch $(TOPDIR)/tmp/.build
+ 

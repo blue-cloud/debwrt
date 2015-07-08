@@ -1,0 +1,56 @@
+
+Debwrt mimics more the Openwrt kernel policy as the Debian kernel policy.
+
+Debian builds a generic bare kernel and installs modules.
+Openwrt builds a fairly complete (device specific) kernels
+and provides a mechanicisme to add exta modules.
+
+Debwrt uses a slightly modified Openwrt kernel. Installing additional
+kernel modules can be done the Debian way when the modules are
+in root filesystem.
+
+Debwrt does build the kernel modules, but default they are NOT copied
+into the rootfs. (The root filesystem is non kernel version dependent)
+
+The kernel modules are after
+ make openwrt/all 
+in the file bin/$BOARD/debwrt-modules-<VERSION>.tar.gz
+
+To make life a little less painfull the following make target exists:
+ make debian/rootfs/modules-install
+which will extract the tar.gz automatically into the rootfs build dir.
+
+(Look in file debian/rootgs/debian.mk for some more interesting make targets.)
+
+
+If you are allready on the running debwrt system, then it is okay
+to copy over the .tar.gz with the kernel modules and untar it.
+
+Something like:
+ export A=me # Account
+ export B=brcm47xx # BOARD
+ export S=-Broadcom-b43 # Sub board
+ export T=/usr/src/debwrt # Top directory
+ export W=-angel-2.0-1 # DebWRT version
+ #
+ cd /tmp
+ scp ${A}@hq:${T}/bin/${B}${W}-default/debwrt-modules-${B}${S}-$(uname \
+  -r)${W}.tar.gz km.tgz
+ tar xzf km.tgz  --directory /
+ rm km.tgz
+Where 'hq' is your development server on the network.
+
+To get the same result while avoiding the intermediate storage
+and doing the gunzip calculation on the development computer:
+ export A=me # Account
+ export B=brcm47xx # BOARD
+ export S=-Broadcom-b43 # Sub board
+ export T=/usr/src/debwrt # Top directory
+ export W=-angel-2.0-1 # DebWRT version
+ #
+ ssh ${A}@hq zcat \
+  ${T}/bin/${B}${W}-default/debwrt-modules-${B}${S}-$(uname -r)${W}.tar.gz \
+ | tar x  --directory /
+
+To avoid 'time stamp in the future' messages, set date, example given
+ date --utc 051619562011

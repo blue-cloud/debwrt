@@ -1,0 +1,12 @@
+Source: debwrt-kernel-headers
+Section: devel
+Priority: extra
+Maintainer: Amain (DebWrt.net) <amain@debwrt.net>
+Build-Depends: debhelper (>= 7)
+Standards-Version: 3.7.3
+Homepage: http://www.debwrt.net/
+
+Package: debwrt-kernel-headers
+Architecture: any
+Description: DebWrt kernel headers
+ Kernel headers for DebWrt

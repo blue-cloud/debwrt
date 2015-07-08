@@ -1,0 +1,24 @@
+Source: libnl-tiny
+Section: net
+Priority: extra
+Maintainer: Amain (DebWrt.net) <amain@debwrt.net>
+Build-Depends: debhelper (>= 7.0.50~)
+Standards-Version: 3.8.4
+Homepage: https://dev.openwrt.org/browser/trunk/package/libnl-tiny
+
+Package: libnl-tiny-dev
+Section: libdevel
+Architecture: any
+Depends: libnl-tiny (= ${binary:Version})
+Description: libnl tiny from OpenWrt
+  Openwrt folks created a tiny version of libnl based on a git snapshot,
+  which only contains genl, not rtnetlink or any of the netfilter stuff, 
+  and compiles down to less than 30k in binary size.
+
+Package: libnl-tiny
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: libnl tiny from OpenWrt
+  Openwrt folks created a tiny version of libnl based on a git snapshot,
+  which only contains genl, not rtnetlink or any of the netfilter stuff, 
+  and compiles down to less than 30k in binary size.

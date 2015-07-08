@@ -1,0 +1,16 @@
+Source: iw
+Section: net
+Priority: extra
+Maintainer: Amain (DebWrt.net) <amain@debwrt.net>
+Build-Depends: debhelper (>= 7)
+Standards-Version: 3.7.3
+Homepage: http://wireless.kernel.org/en/users/Documentation/iw
+
+Package: iw
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: iw is a new nl80211 based CLI configuration utility for wireless devices
+  iw is still under development. Features are added 'as we go'. The 
+  only documentation that exists for iw is this page. Please help expand it.
+  .
+  There is a page listing use cases with iwconfig and iw: replacing iwconfig. 

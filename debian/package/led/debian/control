@@ -1,0 +1,15 @@
+Source: led
+Priority: extra
+Maintainer: Geert Stappers <stappers@stappers.nl>
+Build-Depends: debhelper (>= 7)
+Standards-Version: 3.7.3
+Section: libs
+
+Package: led
+Section: misc
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Light Emitting Diodes as optical indicator.
+ Some OpenWRT devices have LEDs that can be user controlled.
+ .
+ Usefull as optical indication of the boot process.

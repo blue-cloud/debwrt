@@ -1,0 +1,2 @@
+# b44 switch configuration, set to 1 to enable switch configuration
+ENABLED=0

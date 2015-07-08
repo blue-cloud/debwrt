@@ -1,0 +1,11 @@
+--- Bitten-0.7dev_r1011-py2.6.egg/bitten/slave.py.org	2012-10-23 22:28:10.000000000 +0000
++++ Bitten-0.7dev_r1011-py2.6.egg/bitten/slave.py	2012-10-23 22:28:37.000000000 +0000
+@@ -430,7 +430,7 @@
+             basedir = recipe.ctxt.basedir
+             log.debug('Running build in directory %s' % basedir)
+             if not os.path.exists(basedir):
+-                os.mkdir(basedir)
++                os.makedirs(basedir)
+ 
+             for step in recipe:
+                 try:

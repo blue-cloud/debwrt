@@ -1,0 +1,82 @@
+#!/bin/sh
+# 
+# DebWrt boot script 
+#
+# - discover root device (LABEL=DEBWRT_ROOT)
+# - fallback to /dev/sda1
+# - optional kexec to aternate kernel located in DEBWRT_ROOT/boot
+# - mount root device, pivot_root to it and run /sbin/init
+
+#set -x
+
+WAIT=30
+ROOT_LABEL=DEBWRT_ROOT
+DEFAULT_DEV=/dev/sda1
+
+mount -t sysfs sysfs /sys
+mount -t proc  none  /proc
+mount -t tmpfs tmpfs /dev -o mode=0755,size=512K
+mount -t tmpfs tmpfs /tmp -o size=3m,nosuid,nodev,mode=1777 
+[ -c /dev/console ] || mknod /dev/console c 5 1
+/sbin/hotplug2 --set-worker /lib/hotplug2/worker_fork.so --set-rules-file /etc/hotplug2-init.rules --no-persistent --set-coldplug-cmd /sbin/udevtrigger
+/sbin/hotplug2 --set-worker /lib/hotplug2/worker_fork.so --set-rules-file /etc/hotplug2-init.rules --persistent &
+
+wait_for_root_device() { # return: (default) root device
+   local n=0
+   local dev=""
+
+   while [ $n -lt $WAIT ]; do
+      dev=$(blkid -t LABEL=$ROOT_LABEL)
+      if [ "" != "$dev" ]; then
+         dev=${dev/:*/}
+         break;
+      fi
+      sleep 1
+      n=$((n+1))
+   done
+
+   dev=${dev:-$DEFAULT_DEV}
+   echo $dev
+}
+
+echo "[ ---------- ] DebWrt boot"
+echo -n "[ ---------- ] Waiting for device with LABEL=$ROOT_LABEL..."
+dev=$(wait_for_root_device)
+
+if [ -b $dev ]; then 
+   echo "found. Booting from $dev."
+   # root device found
+   # pivot_root to it and run /sbin/init
+   # or kexec if /boot/vmlinux.elf is found on the new root
+
+   killall hotplug2
+   mount $dev /mnt
+
+   if [ -f /mnt/boot/vmlinux.elf ] && ! grep -q "kexec=1" /proc/cmdline; then
+     # kexec into new kernel
+     echo "[ ---------- ] kexec kernel found. Kexec into it."
+
+     cmdline=$(cat /proc/cmdline)
+
+     [ -f /mnt/boot/kexec.conf ] && source /mnt/boot/kexec.conf  # source append= variable
+
+     kexec -l /mnt/boot/vmlinux.elf --append="kexec=1 $cmdline $append"
+     kexec -e
+   else
+     # pivot_root and run /sbin/init
+     umount /proc 2>&-
+     umount /sys  2>&-
+     umount /tmp  2>&-
+     umount /dev  2>&-
+
+     pivot_root /mnt /mnt/mnt
+     exec /bin/sh -c "umount /mnt; exec /sbin/init"
+  fi
+
+else                         
+   # no root device available
+   # spwan normal shell
+   echo "not found. Starting shell."
+   exec /bin/sh
+fi
+

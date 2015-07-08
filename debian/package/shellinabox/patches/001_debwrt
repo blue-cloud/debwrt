@@ -1,0 +1,22 @@
+diff -ru shellinabox-read-only-org/debian/rules shellinabox-read-only-new/debian/rules
+--- shellinabox-read-only-org/debian/rules	2010-09-04 11:00:13.467752184 +0000
++++ shellinabox-read-only-new/debian/rules	2010-09-04 11:01:57.230390033 +0000
+@@ -39,7 +39,7 @@
+ config.status: configure
+ 	dh_testdir
+ 	@# Add here commands to configure the package.
+-	CFLAGS="$(CFLAGS)" ./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --disable-runtime-loading
++	CFLAGS="$(CFLAGS)" ./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info
+ 
+ 
+ build: build-stamp
+diff -ru shellinabox-read-only-org/debian/shellinabox.default shellinabox-read-only-new/debian/shellinabox.default
+--- shellinabox-read-only-org/debian/shellinabox.default	2010-09-04 11:00:13.467752184 +0000
++++ shellinabox-read-only-new/debian/shellinabox.default	2010-09-04 11:02:10.887952579 +0000
+@@ -1,5 +1,5 @@
+ # Should shellinaboxd start automatically
+-SHELLINABOX_DAEMON_START=1
++SHELLINABOX_DAEMON_START=0
+ 
+ # TCP port that shellinboxd's webserver listens on
+ SHELLINABOX_PORT=4200

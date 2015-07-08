@@ -1,0 +1,41 @@
+#
+# this list is during build converted with
+#   grep -v '^#' | tr '\n' , | sed -e 's/^/"/' -e 's/,$/"/' 
+# so it can and will be use as value for the parameter
+#   --include=
+# of the program
+#   debootstrap
+#
+bridge-utils
+bwm-ng
+bzip2
+dash
+dnsmasq
+ebtables
+ethtool
+file
+hdparm
+host
+iperf
+iproute
+less
+lsof
+module-init-tools
+netcat
+ntp
+ntpdate
+openssh-client
+openssh-server
+pciutils
+psmisc
+screen
+sdparm
+strace
+tcpdump
+telnet
+telnetd
+udev
+usbutils
+vim-tiny
+vlan
+wireless-tools

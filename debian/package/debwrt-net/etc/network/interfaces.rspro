@@ -1,0 +1,121 @@
+# DebWrt Debian interfaces: RouterStation Pro
+#
+# - Atheros wireless chipset
+# - Atheros AR8316 switch
+# - Hostapd WPA
+# - Firewall
+#
+# note: don't forget to enable dnsmasq in /etc/defaults/dnsmasq
+#
+# Madwifi drivers are disabled by default in DebWrt ( /etc/modprobe.d/debwrt.conf ). This
+# interfaces file and hostapd config files ( /etc/hostapd/* and /etc/defaults/hostapd )
+# assume the linuxwireless drivers.
+#
+# linuxwireless | ath5k, ath9k: wlan0-wlanN          | hostapd driver: nl80211
+# madwifi       | ath_pci     : wifi0-wifiN -> wlan0 | hostapd driver: madwifi
+#
+# Madwifi: When using madwifi(ath_pci) drivers instead of linuxwireles(athNx) drivers, install
+#          madwifi-tools from Debian Lenny: http://packages.debian.org/nl/lenny/madwifi-tools. Note
+#          that /etc/modprobe.d/madwifi is created when installing madwifi-tools, which disables 
+#          loading of linuxwireless drivers. This file should be removed.
+#
+#          Change driver=nl80211 to driver=madwifi in the hostap.conf file, and the
+#          appropriate lines ( wlanconfig ) in the wifi section of this interfaces file.
+#
+# The switch configures all three LAN ports into one VLAN. Note the example lines on how to
+# use the cpu-port to tag unagged traffic to be used with normal linux vlan configuration. The
+# additional example connects every physical lan port on a seperate vlan interface in linux 
+# (lan.1, lan.2 and lan.3).
+#
+# Hostapd is used to setup the wireless device as an access point. Hostapd adds the
+# wireless device automatically to the lan bridge(br-lan). There are several hostapd example
+# files provided by DebWrt. See /etc/hostapd. Adjust /etc/default/hostapd to 
+# select which configuration to use. By default it is hostapd-nokey.conf.
+#
+# Amain <amain@debwrt.net> - december 2012
+
+auto lo
+iface lo inet loopback
+
+auto pre
+iface pre inet manual
+    pre-up /sbin/ifconfig eth0 down
+    pre-up /sbin/ifconfig eth1 down
+    pre-up /sbin/ifconfig wlan0 down
+    pre-up /sbin/ip link set eth0  name wan
+    pre-up /sbin/ip link set eth1  name lan
+    pre-up /sbin/ip link set wlan0 name wifi
+    pre-up /etc/firewall/firewall.sh start
+
+# switch Atheros AR8316 / lan
+#
+# WAN 	5 	physically* separated and connected to eth0
+# LAN   1 	4 	
+# LAN   2 	3 	
+# LAN   3 	2 	
+# n/a 	1 	No external connector, unusable
+# CPU 	0 
+#
+# http://wiki.openwrt.org/toh/ubiquiti/routerstation.pro
+# http://wiki.mikrotik.com/wiki/Switch_Chip_Features
+auto pre-switch
+iface pre-switch inet manual
+    pre-up    /usr/sbin/swconfig dev lan set reset
+    pre-up    /usr/sbin/swconfig dev lan set enable_vlan 1
+    pre-up    /usr/sbin/swconfig dev lan vlan 1 set ports "0 2 3 4"
+    #pre-up    /usr/sbin/swconfig dev lan vlan 1 set ports "0t 4" # vconfig add lan 1; ifconfig lan.1 <ip> up
+    #pre-up    /usr/sbin/swconfig dev lan vlan 2 set ports "0t 3" # vconfig add lan 2; ifconfig lan.2 <ip> up
+    #pre-up    /usr/sbin/swconfig dev lan vlan 3 set ports "0t 2" # vconfig add lan 3; ifconfig lan.3 <ip> up
+    pre-up    /usr/sbin/swconfig dev lan set apply
+
+auto lan
+iface lan inet manual
+    pre-up    /sbin/ifconfig lan up
+    post-down /sbin/ifconfig lan down
+
+auto wan
+iface wan inet manual
+    pre-up    /sbin/ifconfig wan up
+    pre-up    start-stop-daemon --start  \
+                                --oknodo \
+                                --quiet  \
+                                --pidfile /var/run/dhclient.wan.pid \
+                                --exec /sbin/dhclient \
+                                  -- -v -pf /var/run/dhclient.wan.pid -lf /var/lib/dhcp/dhclient.wan.leases -nw wan
+    post-down /sbin/ifconfig wan down
+    post-down start-stop-daemon --stop \
+                                --signal HUP \
+                                --pidfile /var/run/dhclient.wan.pid \
+                                --exec /sbin/dhclient
+
+auto br-lan
+iface br-lan inet static
+    bridge-ports   lan
+    bridge-stp     off
+    bridge-maxwait 0
+    address        192.168.1.1
+    netmask        255.255.255.0
+
+auto wifi
+iface wifi inet manual
+#    pre-up /sbin/ifconfig wifi0 down
+#    pre-up /sbin/wlanconfig ath0 create wlandev wifi0 wlanmode ap   
+#    pre-up /sbin/ip link set ath0 name wifi
+    pre-up /sbin/ifconfig wifi up
+    pre-up /etc/init.d/hostapd start
+    post-down /etc/init.d/hostapd stop
+    post-down /sbin/ifconfig wifi down
+#    post-down /sbin/wlanconfig wifi destroy
+
+auto post-switch
+iface post-switch inet manual
+    post-down /usr/sbin/swconfig dev lan set reset
+    post-down /usr/sbin/swconfig dev lan set apply
+
+auto post
+iface post inet manual
+    post-down /sbin/ip link set wifi name wlan0
+    post-down /sbin/ip link set lan  name eth1
+    post-down /sbin/ip link set wan  name eth0
+    post-down /etc/firewall/firewall.sh stop
+

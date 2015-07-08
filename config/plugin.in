@@ -1,0 +1,5 @@
+
+source "tmp/plugins-generated.in"
+source "plugins/*/Config.in"
+
+

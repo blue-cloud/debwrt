@@ -1,0 +1,13 @@
+--- openwrt/include/image.mk.org	2010-06-26 12:39:55.741248267 +0200
++++ openwrt/include/image.mk	2010-06-26 12:38:15.301415960 +0200
+@@ -99,7 +99,9 @@
+   ifneq ($(CONFIG_TARGET_ROOTFS_SQUASHFS),)
+     define Image/mkfs/squashfs
+ 		@mkdir -p $(TARGET_DIR)/overlay
+-		$(MKSQUASHFS_CMD) $(TARGET_DIR) $(KDIR)/root.squashfs -nopad -noappend -root-owned $(SQUASHFS_OPTS)
++		@mkdir -p $(TMP_DIR)/debwrt-empty-rootfs/overlay
++		@touch $(TMP_DIR)/debwrt-empty-rootfs/debwrt-empty-rootfs
++		$(MKSQUASHFS_CMD) $(TMP_DIR)/debwrt-empty-rootfs $(KDIR)/root.squashfs -nopad -noappend -root-owned $(SQUASHFS_OPTS)
+ 		$(call Image/Build,squashfs)
+     endef
+   endif

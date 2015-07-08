@@ -1,0 +1,89 @@
+DebWrt Build Environment
+
+use: make <target>
+
+Available targets:
+
+help                             : This help
+
+<no-target>                      : Build it all
+
+flash                            : Flash(sftp) image to default IP of target device
+
+menuconfig                       : DebWrt menu config
+config                           : DebWrt config
+defconfig                        : Create default DebWrt Configuration
+oldconfig                        : DebWrt old config
+clean                            : Clean all areas
+config/clean                     : Clean DebWrt config
+config/target                    : Update DebWrt target devices list with OpenWrt's list
+
+openwrt/all                      : Build all of OpenWrt
+openwrt/build                    : Build OpenWrt
+openwrt/download                 : Download
+openwrt/prepare                  : Prepare OpenWrt
+openwrt/merge-config             : Merge DebWrt and OpenWrt config
+openwrt/download-link            : Set the OpenWrt dowload dir
+openwrt/patch                    : Apply DebWrt patches to OpenWrt sources
+openwrt/checkout                 : SVN checkout OpenWrt
+openwrt/update                   : SVN update OpenWrt
+openwrt/menuconfig               : OpenWrt menu config
+openwrt/kernel_menuconfig        : Kernel menu config
+openwrt/wrtclean                 : Clean build directories ( bin/ build_dir/ )
+openwrt/dirclean                 : Clean build directories and cross-compile tools
+openwrt/distclean                : Clean build directories and cross-compile tools and everything else ( including downloads and .config )
+openwrt/clean                    : Remove OpenWrt checkout entirely
+
+openwrt/deliver/prepare          : Prepare delivery
+openwrt/deliver/import-config    : Display run time compile information
+openwrt/deliver/check            : Check run time compile information
+openwrt/deliver/image            : Deliver firmware images
+openwrt/deliver/kernel-modules   : Deliver kernel-modules package and sources
+openwrt/deliver/kernel-headers   : Deliver kernel-header package and sources
+openwrt/deliver/packages         : Deliver OpenWrt's ipk packages for reference
+openwrt/deliver/config           : Deliver DebWrt, OpenWrt and kernel .config files
+openwrt/deliver/clean            : Clean delivery directory ( bin/ )
+
+debian/clean                     : Clean the entire DebWrt build area
+
+ch                               : Enter DebWrt build environment change root as "root"
+chu                              : Enter DebWrt build environment change root as "user"
+debian/buildenv/create           : Create DebWrt build environment
+debian/buildenv/prepare          : Prepare DebWrt build environment 
+debian/buildenv/emdebian-prepare : Install Emdebin into the DebWrt build environment
+debian/buildenv/qemu-prepare     : Setup pre-requisites for Qemu
+debian/buildenv/qemu-build       : Build Qemu
+debian/buildenv/clean            : Clean build environment ( entire chroot is deleted )
+
+debian/package/rootfs            : Build all DebWrt Debian packages use in the target Debian root filesystem
+debian/package/clean             : Clean all DebWrt Debian packages
+debian/package/<pkg-name>/deliver: Deliver DebWrt Debian package <pkg-name>
+debian/package/<pkg-name>/build  : Build DebWrt Debian package <pkg-name>
+debian/package/<pkg-name>/prepare: Prepare DebWrt Debian package <pkg-name>
+debian/package/<pkg-name>/clean  : Clean DebWrt Debian package <pkg-name>
+
+debian/rootfs                    : Create target Debian root filesystem
+debian/rootfs/install            : Install Debian root filesystem into /media/DEBWRT_ROOT
+debian/rootfs/save               : Create tar.bz2 image from /media/DEBWRT_ROOT ( used by DebWrt to deliver new root fs images )
+debian/rootfs/files-install      : Install additional files, including some device files, to the target root filesystem
+debian/rootfs/modules-install    : Install the DebWrt modules package into the target root filesystem
+debian/rootfs/bootstrap          : Debootstrap of the target root filesystem
+debian/rootfs/unpack             : Re-Unpack all packages installed by debootstrap ( seemed to be needed in the past )
+debian/rootfs/debwrt-packages    : Unpack DebWrt cross compiled packages into the target root filesystem
+debian/rootfs/clean-rootfs-dir   : Clean the target root filesystem
+debian/rootfs/post-setup         : Post install 
+debian/rootfs/clean              : Clean it all
+debian/rootfs/second-stage-qemu  : Execute Debian second stage for the target root filesystem on the host using Qemu
+chr                              : Enter the target change root filesystem using qemu ( like ch and chu ) as "root"
+
+plugins/list                     : List the available plugins
+plugins/apply                    : Apply plugin patches to DebWrt
+plugins/remove                   : Remove plugin patches from DebWrt
+plugins/generate-config          : Generate the config.in file for plugins
+plugins/clean                    : Cleans the plugin area, removes plugin patches to DebWrt (leaves plugin patches to OpenWrt in place, use openwrt/clean)
+
+
+Links:
+
+* http://dev.debwrt.net/wiki/DebWrtSvn
+* http://wiki.openwrt.org/doc/howto/build

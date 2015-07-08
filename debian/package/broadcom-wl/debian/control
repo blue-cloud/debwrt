@@ -1,0 +1,21 @@
+Source: broadcom-wl
+Section: networking
+Priority: extra
+Maintainer: Amain (DebWrt.net) <amain@debwrt.net>
+Build-Depends: debhelper (>= 7.0.50~)
+Standards-Version: 3.8.4
+Homepage: http://www.openwrt.org
+#Svn: https://dev.openwrt.org/browser/trunk/package/broadcom-wl
+
+Package: broadcom-wl
+Architecture: mips mipsel
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Proprietary Broadcom wl driver utilities
+  This package contains an utility (wlc) for initializing the proprietary Broadcom
+  wl driver.
+  .
+  This package contains the proprietary utility (wl) for configuring the
+  proprietary Broadcom wl driver.
+  .
+  This package contains the proprietary WPA/WPA2 authenticator (nas) for the
+  proprietary Broadcom wl driver.

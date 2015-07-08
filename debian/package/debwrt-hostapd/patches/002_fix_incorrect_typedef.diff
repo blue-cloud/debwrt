@@ -1,0 +1,16 @@
+--- src/src/drivers/linux_wext.h	2012-04-29 04:22:47.000000000 -0600
++++ src/src/drivers/linux_wext.h	2012-09-09 19:46:59.133631221 -0600
+@@ -21,11 +21,7 @@
+ 
+ #include <sys/types.h>
+ #include <net/if.h>
+-typedef __uint32_t __u32;
+-typedef __int32_t __s32;
+-typedef __uint16_t __u16;
+-typedef __int16_t __s16;
+-typedef __uint8_t __u8;
++ #include <asm-generic/int-ll64.h>
+ #ifndef __user
+ #define __user
+ #endif /* __user */
+

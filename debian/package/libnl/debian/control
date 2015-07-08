@@ -1,0 +1,21 @@
+Source: libnl
+Priority: extra
+Maintainer: Amain (DebWrt.net) <amain@debwrt.net>
+Build-Depends: debhelper (>= 7), autotools-dev
+Standards-Version: 3.7.3
+Section: libs
+Homepage: http://www.infradead.org/~tgr/libnl/
+
+Package: libnl-dev
+Section: libdevel
+Architecture: any
+Depends: libnl (= ${binary:Version})
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
+
+Package: libnl
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: libnl is a library for applications dealing with netlink sockets
+ The library provides an interface for raw netlink messaging and various netlink family specific interface

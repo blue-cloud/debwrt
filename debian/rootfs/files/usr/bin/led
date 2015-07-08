@@ -1,0 +1,64 @@
+#!/bin/sh
+#
+# Johan van Zoomeren <amain@debwrt.net>
+# 2010
+#
+# usage: led <on|off|n> 
+#
+#        on : enable powerled
+#        off: disable powerled
+#        n  : flash every n seconds ( n may be smaller then 0. For example 0.5 )
+
+ARG1=$1
+ARG2=$2
+sleep=${ARG1:=1}
+if [ "`echo $sleep | egrep ^[0-9\.]+$`" = "" ]; then sleep=1; fi
+
+led_kill ()
+{
+   ps x | grep "/usr/bin/led .*loop" | grep -v grep | awk '{print $1}' | xargs -r kill
+}
+
+led_off ()
+{
+   echo "0">/proc/diag/led/power 2>/dev/null
+}
+
+led_on ()
+{
+   echo "1">/proc/diag/led/power 2>/dev/null
+}
+
+trigger ()
+{
+   led_on
+   exit 0
+}
+
+trap 'trigger' 2 3 1 9 15
+
+/sbin/modprobe diag >/dev/null 2>&1
+[ ! -f /proc/diag/led/power ] && exit 1
+
+if [ "off" = "$ARG1" ]; then
+   led_kill
+   led_off
+   exit 0
+elif [ "on" = "$ARG1" ]; then
+   led_kill
+   led_on
+   exit 0
+fi
+
+if [ ! "loop" = "$ARG2" ]; then 
+   led_kill
+   exec $0 $ARG1 loop &
+   exit 0
+fi 
+
+toggle=$(((`cat /proc/diag/led/power 2>/dev/null`+1)%2))
+while true; do
+   echo ${toggle}>/proc/diag/led/power 2>/dev/null
+   sleep $sleep
+   toggle=$(((toggle+1)%2))
+done

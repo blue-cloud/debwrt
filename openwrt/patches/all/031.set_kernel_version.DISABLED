@@ -1,0 +1,14 @@
+--- openwrt/include/target.mk.org	2010-01-09 13:31:26.122174490 +0100
++++ openwrt/include/target.mk	2010-01-09 13:30:59.542175216 +0100
+@@ -8,6 +8,11 @@
+ ifneq ($(__target_inc),1)
+ __target_inc=1
+ 
++USE_DEFAULT_KERNEL:=$(call qstrip,$(CONFIG_DEBWRT_KERNEL_DEFAULT))
++ifneq ($(USE_DEFAULT_KERNEL),y)
++    LINUX_VERSION:=$(call qstrip,$(DEBWRT_KERNEL_VERSION))
++endif
++
+ # default device type
+ DEVICE_TYPE?=router
+ 

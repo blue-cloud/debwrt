@@ -1,0 +1,17 @@
+debwrt-hostapd (1.0-2) stable unstable; urgency=low
+
+  * Fix bug #9989: hostapd package is empty after building
+
+ -- Amain (DebWrt.net) <amain@debwrt.net>  Sat, 21 Dec 2013 10:37:00 +0000
+
+debwrt-hostapd (1.0-1) stable unstable; urgency=low
+
+  * Remove old checks from init script
+
+ -- Amain (DebWrt.net) <amain@debwrt.net>  Sun, 18 Nov 2012 00:36:00 +0000
+
+hostapd (1.0) stable unstable; urgency=low
+
+  * Initial Release.
+
+ -- Amain (DebWrt.net) <amain@debwrt.net>  Thu, 02 Sep 2010 17:03:58 +0000

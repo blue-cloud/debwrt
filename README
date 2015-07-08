@@ -1,0 +1,12 @@
+
+This is the DebWrt build environment.
+It is heavily based on OpenWrt's build environment
+and heavily uses Emdebian and Debootstrap for all Debian related actions.
+
+DebWrt connects two very powerfull technologies: Debian and OpenWrt.
+Debian has a great package management system and includes thousands of packages
+for many architectures.
+OpenWrt has great Linux kernel support for many embedded devices.
+
+Bringing these two strenghts together opens a whole new world of possibilities.
+..

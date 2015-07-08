@@ -1,0 +1,20 @@
+--- openwrt/Makefile.org	2012-10-06 22:19:55.000000000 +0200
++++ openwrt/Makefile	2012-10-06 22:23:53.000000000 +0200
+@@ -83,8 +83,16 @@
+ 		exit 1; \
+ 	fi
+ 
++con:
++	echo "OPENWRT_BIN_DIR=$(BIN_DIR)" > $(TOPDIR)/.openwrt_env
++	echo "OPENWRT_PACKAGE_DIR=$(PACKAGE_DIR)" >> $(TOPDIR)/.openwrt_env
++	echo "OPENWRT_TMP_DIR=$(TMP_DIR)" >> $(TOPDIR)/.openwrt_env
++	#
++	# LINUX_VERSION is saved from include/kernel-defaults.mk
++	#
++
+ prepare: .config $(tools/stamp-install) $(toolchain/stamp-install)
+-world: prepare $(target/stamp-compile) $(package/stamp-compile) $(package/stamp-install) $(target/stamp-install) FORCE
++world: con prepare $(target/stamp-compile) $(package/stamp-compile) $(package/stamp-install) $(target/stamp-install) con FORCE
+ 	$(_SINGLE)$(SUBMAKE) -r package/index
+ 
+ # update all feeds, re-create index files, install symlinks

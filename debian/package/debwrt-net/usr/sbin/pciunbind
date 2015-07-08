@@ -1,0 +1,15 @@
+#!/bin/bash
+
+sysfs=/sys/bus/pci/drivers/b43-pci-bridge
+
+if [ -d "$sysfs" ]; then
+    for lnk in $sysfs/*; do
+        [ -h "$lnk" ] || continue
+        case "${lnk##*/}" in
+            *:*:*.*)
+                echo "Unbinding WL PCI device ${lnk##*/} from B43 SSB bridge"
+                echo -n "${lnk##*/}" > "$sysfs/unbind"
+            ;;
+        esac
+    done
+fi

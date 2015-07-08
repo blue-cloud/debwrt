@@ -1,0 +1,27 @@
+--- openwrt/include/kernel-defaults.mk.org	2010-01-24 18:54:27.180961698 +0100
++++ openwrt/include/kernel-defaults.mk	2010-01-24 18:54:16.741060956 +0100
+@@ -96,7 +96,9 @@
+ 	-$(_SINGLE)$(MAKE) $(KERNEL_MAKEOPTS) oldconfig prepare scripts
+ endef
+ define Kernel/Configure/Default
+-	$(LINUX_CONFCMD) > $(LINUX_DIR)/.config.target
++	# DebWrt: merge our custom config
++	$(LINUX_CONFCMD) > $(LINUX_DIR)/.config.target.default
++	$(SCRIPT_DIR)/kconfig.pl + $(LINUX_DIR)/.config.target.default $(TOPDIR)/.config.debwrt > $(LINUX_DIR)/.config.target
+ # copy CONFIG_KERNEL_* settings over to .config.target
+ 	awk '/^(#[[:space:]]+)?CONFIG_KERNEL/{sub("CONFIG_KERNEL_","CONFIG_");print}' $(TOPDIR)/.config >> $(LINUX_DIR)/.config.target
+ 	echo "# CONFIG_KALLSYMS_EXTRA_PASS is not set" >> $(LINUX_DIR)/.config.target
+@@ -113,7 +115,12 @@
+ 
+ define Kernel/CompileModules/Default
+ 	rm -f $(LINUX_DIR)/vmlinux $(LINUX_DIR)/System.map
+-	+$(MAKE) $(KERNEL_MAKEOPTS) modules
++	# DebWrt make modules install
++	-mkdir -p $(TMP_DIR)/modules
++	+$(MAKE) $(KERNEL_MAKEOPTS) modules modules_install INSTALL_MOD_PATH=$(TMP_DIR)/modules
++	echo "OPENWRT_LINUX_VERSION=$(LINUX_VERSION)" >> $(TOPDIR)/.openwrt_env
++	echo "OPENWRT_LINUX_UNAME_VERSION=$(LINUX_UNAME_VERSION)" >> $(TOPDIR)/.openwrt_env
++	echo "OPENWRT_LINUX_DIR=$(LINUX_DIR)" >> $(TOPDIR)/.openwrt_env
+ endef
+ 
+ OBJCOPY_STRIP = -R .reginfo -R .notes -R .note -R .comment -R .mdebug -R .note.gnu.build-id

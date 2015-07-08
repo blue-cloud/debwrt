@@ -1,0 +1,36 @@
+config DEBWRT_KERNEL_VERSION
+        string
+		default "default" if DEBWRT_KERNEL_DEFAULT 
+		default "2.6.32"  if DEBWRT_KERNEL_2_6_32
+		default "2.6.31"  if DEBWRT_KERNEL_2_6_31
+		default "2.6.30"  if DEBWRT_KERNEL_2_6_30
+		default "unknown"
+
+choice
+        prompt "Kernel Version"
+        default DEBWRT_KERNEL_DEFAULT
+        help
+          Select the linux kernel version you want to use with DebWrt
+
+config DEBWRT_KERNEL_DEFAULT
+        bool
+        prompt "Default"
+
+#config DEBWRT_KERNEL_2_6_32
+#        bool
+#       prompt "2.6.32" if OPENWRT_REVISION_TRUNK || OPENWRT_REVISION_R18829
+#
+#config DEBWRT_KERNEL_2_6_31
+#        bool
+#       prompt "2.6.31" if OPENWRT_REVISION_TRUNK || OPENWRT_REVISION_R18829
+#
+#config DEBWRT_KERNEL_2_6_30
+#        bool
+#       prompt "2.6.30" if OPENWRT_REVISION_TRUNK || OPENWRT_REVISION_R18829
+#
+#config DEBWRT_KERNEL_2_6_28
+#        bool
+#       prompt "2.6.28" if OPENWRT_REVISION_8_09
+
+endchoice
+

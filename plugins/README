@@ -1,0 +1,34 @@
+DebWrt plugins support
+
+Layout:
+
+  plugins/<plugin-name>/           - plugin directory
+  plugins/<plugin-name>/README     - information about the plugin
+  plugins/<plugin-name>/plugin.mk  - included as a Makefile by plugins.mk
+  plugins/<plugin-name>/debwrt     - debwrt patches
+  plugins/<plugin-name>/openwrt    - openwrt patches
+
+All plugins are enabled by default and all patches part of the plugin will be
+applied to DebWrt and OpenWrt. Use the make <target> PLUGIN=<plugin-name> to 
+only apply one plugin.
+
+The DebWrt patches are automatically applied in `sort`-ed order before 
+make (menu)config.
+
+OpenWrt patches are applied at the same time as DebWrt's patches to OpenWrt.
+Patches can be target at specific branches or ranges of revision based on
+filename.  Refer to openwrt/patches/README for imformation on the process.
+Note patches MUST follow the rules in openwrt/patches/README as otherwise they
+will not be applied!
+
+plugin.mk is included by the plugins.mk Makefile.  See
+plugins/example/plugin.mk.example for an example.  Note most rules will require
+$(PLUGIN_ID) to be copied into a pattern-specific variable.
+
+
+Make targets to manage plugings. Normally only needed when developing a plugin. Targets:
+
+  make plugins/apply   - Apply debwrt patches and show message openwrt patches are done later
+  make plugins/remove  - Remove debwrt patches
+  make plugins/clean   - Clean up apply and de-apply states
+

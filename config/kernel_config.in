@@ -1,0 +1,661 @@
+# DebWrt - Debian on Embedded devices
+#
+# Copyright (C) 2010 Johan van Zoomeren <amain@debwrt.net>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+menu "Kernel Configuration"
+
+menu "General configuration"
+
+#CONFIG_MIPS_FPU_EMU=y
+config MIPS_FPU_EMU
+	bool "Enable kernel Floating Point emulation for MIPS"
+	default y
+	help
+	  Build MIPS Floating Point emultaion into the kernel. Actually OpenWrt created a patch
+	  to remove FPU code for MIPS from the kernel, to save a few bytes. However, Debian needs
+	  the FPU to be enabled since glibc? does not have FPU code compiled in. When FPU is not
+	  available no Debian compiled program will run. Init(which is the first process which is
+          started by the kernel will just freeze.
+
+config INOTIFY
+        bool "Inotify file change notification support"
+        default y
+        ---help---
+	  udev in Debian SID won't boot if Inotify file change notification is not enabled in the
+	  kernel.
+
+          Say Y here to enable inotify support.  Inotify is a file change
+          notification system and a replacement for dnotify.  Inotify fixes
+          numerous shortcomings in dnotify and introduces several new features
+          including multiple file events, one-shot support, and unmount
+          notification.
+
+          For more information, see <file:Documentation/filesystems/inotify.txt>
+
+          If unsure, say Y.
+
+config INOTIFY_USER
+        bool "Inotify support for userspace"
+        depends on INOTIFY
+        default y
+        ---help---
+          Say Y here to enable inotify support for userspace, including the
+          associated system calls.  Inotify allows monitoring of both files and
+          directories via a single open fd.  Events are read from the file
+          descriptor, which is also select()- and poll()-able.
+
+          For more information, see <file:Documentation/filesystems/inotify.txt>
+
+          If unsure, say Y.
+
+#CONFIG_BLK_DEV_LOOP=y
+config BLK_DEV_LOOP
+	bool "Loopback device support"
+	default y
+	help
+	  Saying Y here will allow you to use a regular file as a block device. I can't live without 
+	  this feature ;-)
+
+endmenu
+
+menu "IDE Configuration"
+
+#CONFIG_IDEPCI_PCIBUS_ORDER=y
+config IDEPCI_PCIBUS_ORDER
+    bool
+    default y
+
+#CONFIG_IDE_XFER_MODE=y
+config IDE_XFER_MODE
+    bool
+    default y
+
+#CONFIG_BLK_DEV_IDEDMA_SFF=y
+config BLK_DEV_IDEDMA_SFF
+    bool
+    default y
+
+#CONFIG_BLK_DEV_IDEPCI=y
+config BLK_DEV_IDEPCI
+    bool
+    default y
+
+#CONFIG_BLK_DEV_IDEDMA_PCI=y
+config BLK_DEV_IDEDMA_PCI
+    bool
+    default y
+
+#CONFIG_BLK_DEV_IDEDMA=y
+config BLK_DEV_IDEDMA
+    bool
+    default y
+
+# make kernel compile not stop:
+config IDE_GD_ATAPI
+	bool
+	default n
+
+#CONFIG_IDE=y
+config IDE
+    bool "ATA/ATAPI/MFM/RLL support (DEPRECATED)"
+    default n
+    ---help---
+      If you say Y here, your kernel will be able to manage ATA/(E)IDE and
+      ATAPI units. The most common cases are IDE hard drives and ATAPI
+      CD-ROM drives.
+
+      This subsystem is currently in maintenance mode with only bug fix
+      changes applied. Users of ATA hardware are encouraged to migrate to
+      the newer ATA subsystem ("Serial ATA (prod) and Parallel ATA
+      (experimental) drivers") which is more actively maintained.
+
+      To compile this driver as a module, choose M here: the
+      module will be called ide-core.
+
+      For further information, please read <file:Documentation/ide/ide.txt>.
+
+      If unsure, say N.
+
+#CONFIG_IDE_GD=y
+config IDE_GD
+    tristate "generic ATA/ATAPI disk support"
+    default y
+    help
+      Support for ATA/ATAPI disks (including ATAPI floppy drives).
+
+      To compile this driver as a module, choose M here.
+      The module will be called ide-gd_mod.
+
+      If unsure, say Y.
+
+#CONFIG_IDE_GD_ATA=y
+config IDE_GD_ATA
+    bool "ATA disk support"
+    depends on IDE_GD
+    default y
+    help
+      This will include support for ATA hard disks.
+
+      If unsure, say Y.
+
+#CONFIG_IDE_PROC_FS=y
+config IDE_PROC_FS
+    bool "legacy /proc/ide/ support"
+    depends on IDE
+    default y
+    help
+      This option enables support for the various files in
+      /proc/ide.  In Linux 2.6 this has been superseded by
+      files in sysfs but many legacy applications rely on this.
+
+      If unsure say Y.
+
+#CONFIG_BLK_DEV_PDC202XX_OLD=y
+config BLK_DEV_PDC202XX_OLD
+    tristate "PROMISE PDC202{46|62|65|67} support"
+    select BLK_DEV_IDEDMA_PCI
+    default y
+    help
+      Promise Ultra33 or PDC20246
+      Promise Ultra66 or PDC20262
+      Promise Ultra100 or PDC20265/PDC20267/PDC20268
+
+      This driver adds up to 4 more EIDE devices sharing a single
+      interrupt. This add-on card is a bootable PCI UDMA controller. Since
+      multiple cards can be installed and there are BIOS ROM problems that
+      happen if the BIOS revisions of all installed cards (three-max) do
+      not match, the driver attempts to do dynamic tuning of the chipset
+      at boot-time for max-speed.  Ultra33 BIOS 1.25 or newer is required
+      for more than one card.
+
+      Please read the comments at the top of
+      <file:drivers/ide/pci/pdc202xx_old.c>.
+
+      If unsure, say N.
+
+endmenu
+
+menu "SCSI configuration"
+
+#CONFIG_SCSI=y
+config SCSI
+	tristate "SCSI device support"
+	default y
+	help
+ 	  SCSI device support
+
+#CONFIG_SCSI_DMA=y
+config SCSI_DMA
+	bool 
+	prompt "Enable DMA for SCSI" if SCSI
+	default y
+ 
+#CONFIG_SCSI_PROC_FS=y
+config SCSI_PROC_FS
+	bool "legacy /proc/scsi/ support"
+	depends on SCSI
+	default y
+	help
+	  This option enables support for the various files in
+	  /proc/scsi. In Linux 2.6 this has been superseded by
+ 	  files in sysfs but many legacy applications rely on this.
+
+#CONFIG_SCSI_WAIT_SCAN=m
+config SCSI_WAIT_SCAN
+	tristate "Wait for SCSI scan completion"
+	depends on SCSI
+	default n
+	help
+	  The SCSI subsystem can probe for devices while the rest of the
+	  system continues booting, and even probe devices on different
+	  busses in parallel, leading to a significant speed-up.
+	
+	  You can load the scsi_wait_scan module to ensure that all scans
+	  have completed.
+ 
+#CONFIG_BLK_DEV_SD=y
+config BLK_DEV_SD
+	tristate "SCSI disk support"
+	depends on SCSI
+	default y
+	help
+          If you want to use SCSI hard disks, Fibre Channel disks,
+          Serial ATA (SATA) or Parallel ATA (PATA) hard disks,
+          USB storage or the SCSI or parallel port version of
+          the IOMEGA ZIP drive, say Y and read the SCSI-HOWTO,
+          the Disk-HOWTO and the Multi-Disk-HOWTO, available from
+          <http://www.tldp.org/docs.html#howto>. This is NOT for SCSI
+          CD-ROMs.
+
+          To compile this driver as a module, choose M here and read
+          <file:Documentation/scsi/scsi.txt>.
+          The module will be called sd_mod.
+
+          Do not compile this driver as a module if your root file system
+          (the one containing the directory /) is located on a SCSI disk.
+          In this case, do not compile the driver for your SCSI host adapter
+          (below) as a module either. 
+
+endmenu
+
+menu "USB configuration" 
+
+#CONFIG_USB=y
+config USB
+	tristate "USB support"
+	default y
+	help
+          This option adds core support for Universal Serial Bus (USB).
+          You will also need drivers from the following menu to make use of it.	
+
+config USB_DEBUG
+        bool "USB verbose debug messages"
+	default n
+        depends on USB
+        help
+          Say Y here if you want the USB core & hub drivers to produce a bunch
+          of debug messages to the system log. Select this if you are having a
+          problem with USB support and want to see more of what is going on. 
+
+#CONFIG_USB_ANNOUNCE_NEW_DEVICES=y
+config USB_ANNOUNCE_NEW_DEVICES
+        bool "USB announce new devices"
+        depends on USB
+        default y
+        help
+          Say Y here if you want the USB core to always announce the
+          idVendor, idProduct, Manufacturer, Product, and SerialNumber
+          strings for every new USB device to the syslog.  This option is
+          usually used by distro vendors to help with debugging and to
+          let users know what specific device was added to the machine
+          in what location.
+
+          If you do not want this kind of information sent to the system
+          log, or have any doubts about this, say N here.
+
+#CONFIG_USB_DEVICEFS=y
+config USB_DEVICEFS
+        bool "USB device filesystem"
+        depends on USB
+	default y
+        help
+          If you say Y here (and to "/proc file system support" in the "File
+          systems" section, above), you will get a file /proc/bus/usb/devices
+          which lists the devices currently connected to your USB bus or
+          busses, and for every connected device a file named
+          "/proc/bus/usb/xxx/yyy", where xxx is the bus number and yyy the
+          device number; the latter files can be used by user space programs
+          to talk directly to the device. These files are "virtual", meaning
+          they are generated on the fly and not stored on the hard drive.
+
+          You may need to mount the usbfs file system to see the files, use
+          mount -t usbfs none /proc/bus/usb
+
+          For the format of the various /proc/bus/usb/ files, please read
+          <file:Documentation/usb/proc_usb_info.txt>.
+
+          Usbfs files can't handle Access Control Lists (ACL), which are the
+          default way to grant access to USB devices for untrusted users of a
+          desktop system. The usbfs functionality is replaced by real
+          device-nodes managed by udev. These nodes live in /dev/bus/usb and
+          are used by libusb.
+ 
+#CONFIG_USB_DEVICE_CLASS=y
+config USB_DEVICE_CLASS
+        bool "USB device class-devices (DEPRECATED)"
+        depends on USB
+        default y
+        ---help---
+          Userspace access to USB devices is granted by device-nodes exported
+          directly from the usbdev in sysfs. Old versions of the driver
+          core and udev needed additional class devices to export device nodes.
+
+          These additional devices are difficult to handle in userspace, if
+          information about USB interfaces must be available. One device
+          contains the device node, the other device contains the interface
+          data. Both devices are at the same level in sysfs (siblings) and one
+          can't access the other. The device node created directly by the
+          usb device is the parent device of the interface and therefore
+          easily accessible from the interface event.
+
+          This option provides backward compatibility for libusb device
+          nodes (lsusb) when usbfs is not used, and the following udev rule
+          doesn't exist:
+            SUBSYSTEM=="usb", ACTION=="add", ENV{DEVTYPE}=="usb_device", \
+            NAME="bus/usb/$env{BUSNUM}/$env{DEVNUM}", MODE="0644" 
+
+#CONFIG_USB_MON=y
+config USB_MON
+        tristate "USB Monitor"
+        depends on USB
+        default y if USB=y
+        default m if USB=m
+        help
+          If you select this option, a component which captures the USB traffic
+          between peripheral-specific drivers and HC drivers will be built.
+          For more information, see <file:Documentation/usb/usbmon.txt>.
+
+          If unsure, say Y (if allowed), otherwise M.
+ 
+#CONFIG_USB_EHCI_HCD=y
+config USB_EHCI_HCD
+    bool "EHCI HCD (USB 2.0) support"
+	depends on USB
+	default y
+        ---help---
+          The Enhanced Host Controller Interface (EHCI) is standard for USB 2.0
+          "high speed" (480 Mbit/sec, 60 Mbyte/sec) host controller hardware.
+          If your USB host controller supports USB 2.0, you will likely want to
+          configure this Host Controller Driver.
+
+          EHCI controllers are packaged with "companion" host controllers (OHCI
+          or UHCI) to handle USB 1.1 devices connected to root hub ports.  Ports
+          will connect to EHCI if the device is high speed, otherwise they
+          connect to a companion controller.  If you configure EHCI, you should
+          probably configure the OHCI (for NEC and some other vendors) USB Host
+          Controller Driver or UHCI (for Via motherboards) Host Controller
+          Driver too.
+
+          You may want to read <file:Documentation/usb/ehci.txt>.
+
+          To compile this driver as a module, choose M here: the
+          module will be called ehci-hcd. 
+
+# +CONFIG_USB_OHCI_HCD=y
+config USB_OHCI_HCD
+    tristate "OHCI HCD support"
+    depends on USB
+	default m if TARGET_brcm47xx=y
+	default y if TARGET_brcm47xx!=y
+    ---help---
+      The Open Host Controller Interface (OHCI) is a standard for accessing
+      USB 1.1 host controller hardware.  It does more in hardware than Intel's
+      UHCI specification.  If your USB host controller follows the OHCI spec,
+      say Y.  On most non-x86 systems, and on x86 hardware that's not using a
+      USB controller from Intel or VIA, this is appropriate.  If your host
+      controller doesn't use PCI, this is probably appropriate.  For a PCI
+      based system where you're not sure, the "lspci -v" entry will list the
+      right "prog-if" for your USB controller(s):  EHCI, OHCI, or UHCI.
+
+      To compile this driver as a module, choose M here: the
+      module will be called ohci-hcd.
+
+# +CONFIG_USB_UHCI_HCD=y
+config USB_UHCI_HCD
+    tristate "UHCI HCD (most Intel and VIA) support"
+    depends on USB
+	default y
+    ---help---
+      The Universal Host Controller Interface is a standard by Intel for
+      accessing the USB hardware in the PC (which is also called the USB
+      host controller). If your USB host controller conforms to this
+      standard, you may want to say Y, but see below. All recent boards
+      with Intel PCI chipsets (like intel 430TX, 440FX, 440LX, 440BX,
+      i810, i820) conform to this standard. Also all VIA PCI chipsets
+      (like VIA VP2, VP3, MVP3, Apollo Pro, Apollo Pro II or Apollo Pro
+      133). If unsure, say Y.
+
+      To compile this driver as a module, choose M here: the
+      module will be called uhci-hcd.
+
+#CONFIG_USB_EHCI_AR71XX=y
+config USB_EHCI_AR71XX
+        bool "USB EHCI support for AR71xx"
+	depends on USB_EHCI_HCD && TARGET_ar71xx
+        default y
+        help
+          Support for Atheros AR71xx built-in EHCI controller
+
+#CONFIG_USB_OHCI_AR71XX=y
+config USB_OHCI_AR71XX
+        bool "USB OHCI support for Atheros AR71xx"
+	depends on USB_OHCI_HCD && TARGET_ar71xx
+        default y
+        help
+          Support for Atheros AR71xx built-in OHCI controller
+ 
+config USB_EHCI_ROOT_HUB_TT
+        bool "Root Hub Transaction Translators"
+        depends on USB_EHCI_HCD
+	default n
+        ---help---
+          Some EHCI chips have vendor-specific extensions to integrate
+          transaction translators, so that no OHCI or UHCI companion
+          controller is needed.  It's safe to say "y" even if your
+          controller doesn't support this feature.
+
+          This supports the EHCI implementation that's originally
+          from ARC, and has since changed hands a few times.
+ 
+#CONFIG_USB_STORAGE=y
+config USB_STORAGE
+        tristate "USB Mass Storage support"
+        depends on USB && SCSI
+	default y
+        ---help---
+          Say Y here if you want to connect USB mass storage devices to your
+          computer's USB port. This is the driver you need for USB
+          floppy drives, USB hard disks, USB tape drives, USB CD-ROMs,
+          USB flash devices, and memory sticks, along with
+          similar devices. This driver may also be used for some cameras
+          and card readers.
+
+          This option depends on 'SCSI' support being enabled, but you
+          probably also need 'SCSI device support: SCSI disk support'
+          (BLK_DEV_SD) for most USB storage devices.
+
+          To compile this driver as a module, choose M here: the
+          module will be called usb-storage.
+
+endmenu
+
+menu "Filesystem support"
+
+config EXT3_FS
+	tristate "Ext3 journalling file system support"
+	default y
+	select JBD
+	help
+	  This is the journalling version of the Second extended file system
+	  (often called ext3), the de facto standard Linux file system
+	  (method to organize files on a storage device) for hard disks.
+
+	  The journalling code included in this driver means you do not have
+	  to run e2fsck (file system checker) on your file systems after a
+	  crash.  The journal keeps track of any changes that were being made
+	  at the time the system crashed, and can ensure that your file system
+	  is consistent without the need for a lengthy check.
+
+	  Other than adding the journal to the file system, the on-disk format
+	  of ext3 is identical to ext2.  It is possible to freely switch
+	  between using the ext3 driver and the ext2 driver, as long as the
+	  file system has been cleanly unmounted, or e2fsck is run on the file
+	  system.
+
+	  To add a journal on an existing ext2 file system or change the
+	  behavior of ext3 file systems, you can use the tune2fs utility ("man
+	  tune2fs").  To modify attributes of files and directories on ext3
+	  file systems, use chattr ("man chattr").  You need to be using
+	  e2fsprogs version 1.20 or later in order to create ext3 journals
+	  (available at <http://sourceforge.net/projects/e2fsprogs/>).
+
+	  To compile this file system support as a module, choose M here: the
+	  module will be called ext3.
+
+config EXT3_DEFAULTS_TO_ORDERED
+	bool "Default to 'data=ordered' in ext3 (legacy option)"
+	depends on EXT3_FS
+	help
+	  If a filesystem does not explicitly specify a data ordering
+	  mode, and the journal capability allowed it, ext3 used to
+	  historically default to 'data=ordered'.
+
+	  That was a rather unfortunate choice, because it leads to all
+	  kinds of latency problems, and the 'data=writeback' mode is more
+	  appropriate these days.
+
+	  You should probably always answer 'n' here, and if you really
+	  want to use 'data=ordered' mode, set it in the filesystem itself
+	  with 'tune2fs -o journal_data_ordered'.
+
+	  But if you really want to enable the legacy default, you can do
+	  so by answering 'y' to this question.
+
+config EXT3_FS_XATTR
+	bool "Ext3 extended attributes"
+	depends on EXT3_FS
+	default y
+	help
+	  Extended attributes are name:value pairs associated with inodes by
+	  the kernel or by users (see the attr(5) manual page, or visit
+	  <http://acl.bestbits.at/> for details).
+
+	  If unsure, say N.
+
+	  You need this for POSIX ACL support on ext3.
+
+config EXT3_FS_POSIX_ACL
+	bool "Ext3 POSIX Access Control Lists"
+	depends on EXT3_FS_XATTR
+	select FS_POSIX_ACL
+	help
+	  Posix Access Control Lists (ACLs) support permissions for users and
+	  groups beyond the owner/group/world scheme.
+
+	  To learn more about Access Control Lists, visit the Posix ACLs for
+	  Linux website <http://acl.bestbits.at/>.
+
+	  If you don't know what Access Control Lists are, say N
+
+config EXT3_FS_SECURITY
+	bool "Ext3 Security Labels"
+	depends on EXT3_FS_XATTR
+	help
+	  Security labels support alternative access control models
+	  implemented by security modules like SELinux.  This option
+	  enables an extended attribute handler for file security
+	  labels in the ext3 filesystem.
+
+	  If you are not using a security module that requires using
+	  extended attributes for file security labels, say N.
+
+config FS_POSIX_ACL
+	bool
+	default y
+
+#CONFIG_JBD=y
+config JBD
+        tristate "JBD generic journalling layer"
+        help
+          This is a generic journalling layer for block devices.  It is
+          currently used by the ext3 file system, but it could also be
+          used to add journal support to other file systems or block
+          devices such as RAID or LVM.
+
+          If you are using the ext3 file system, you need to say Y here.
+          If you are not using ext3 then you will probably want to say N.
+
+          To compile this device as a module, choose M here: the module will be
+          called jbd.  If you are compiling ext3 into the kernel, you
+          cannot compile this code as a module.
+
+#CONFIG_FS_MBCACHE=y
+config FS_MBCACHE
+# Meta block cache for Extended Attributes (ext2/ext3/ext4)
+	tristate "Meta block cache for Extended Attributes (ext2/ext3/ext4)"
+	default y if EXT2_FS=y && EXT2_FS_XATTR
+	default y if EXT3_FS=y && EXT3_FS_XATTR
+	default y if EXT4_FS=y && EXT4_FS_XATTR
+	default m if EXT2_FS_XATTR || EXT3_FS_XATTR || EXT4_FS_XATTR
+
+endmenu	 
+ 
+menu "OpenWrt Kernel Module Packages"
+
+menu "Wireless Kernel Modules"
+
+config PACKAGE_kmod-ath5k
+	bool "kmod-ath5k........................... Atheros 5xxx wireless cards support"
+	default y
+  	help
+	  This module adds support for wireless adapters based on
+	  Atheros 5xxx chipset.
+	  http://linuxwireless.org/en/users/Drivers/ath5k
+
+config PACKAGE_kmod-ath9k
+	bool "kmod-ath9k........................ Atheros 802.11n wireless cards support"
+	default y
+	help
+	  This module adds support for wireless adapters based on
+	  Atheros IEEE 802.11n AR5008 and AR9001 family of chipsets.
+	  http://linuxwireless.org/en/users/Drivers/ath9k
+
+config PACKAGE_kmod-madwifi
+	bool "kmod-madwifi........................ Driver for Atheros wireless chipsets"
+	default y
+    help
+     This package contains a driver for Atheros 802.11a/b/g chipsets.
+     http://madwifi-project.org/
+
+config PACKAGE_kmod-b43
+	bool "kmod-b43.................................. Broadcom 43xx wireless support"
+	default y
+        help
+          Kernel module for Broadcom 43xx wireless support (mac80211 stack) new
+          http://linuxwireless.org/en/users/Drivers/b43
+
+config PACKAGE_kmod-b43legacy
+	bool "kmod-b43legacy..................... Broadcom 43xx-legacy wireless support"
+	default y
+    help
+      Kernel module for Broadcom 43xx-legacy wireless support (mac80211 stack) new
+      http://linuxwireless.org/en/users/Drivers/b43
+
+config PACKAGE_kmod-rt2500-pci
+	bool "kmod-rt2500-pci............. Ralink Drivers for RT2x00 cards (RT2500 PCI)"
+	default y 
+	help
+      Ralink Drivers for RT2x00 cards (RT2500 PCI)
+      http://linuxwireless.org/
+
+config PACKAGE_kmod-rt2500-usb
+	bool "kmod-rt2500-usb............. Ralink Drivers for RT2x00 cards (RT2500 USB)"
+	default y
+	help
+	Ralink Drivers for RT2x00 cards (RT2500 USB)
+	http://linuxwireless.org/
+
+endmenu
+ 
+endmenu
+
+config NETCONSOLE
+        bool "Network console logging support (EXPERIMENTAL)"
+	default y
+        ---help---
+        If you want to log kernel messages over the network, enable this.
+        See <file:Documentation/networking/netconsole.txt> for details.
+
+config NETCONSOLE_DYNAMIC
+	bool
+	default n
+
+config NETPOLL_TRAP
+	bool
+	default n
+
+endmenu
+

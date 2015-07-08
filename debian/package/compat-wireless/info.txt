@@ -1,0 +1,7 @@
+
+# Prep host chroot
+sudo mkdir -p /lib/modules/2.6.32-23
+sudo touch /lib/modules/2.6.32-23/modules.dep
+
+# compile compat
+make ARCH=mips KLIB=/usr/src/linux-headers-2.6.32.14/ KLIB_BUILD=/usr/src/linux-headers-2.6.32.14/

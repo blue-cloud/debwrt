@@ -1,0 +1,77 @@
+DebWrt - just some unsorted info on nas
+
+WPA2: -P /var/run/nas.wl0.pid -H 34954 -l br-lan -i wl0 -A -m 128 -w 4 -g 3600 -k "debwrtdebwrt" -s DebWrt
+WPA : -P $PIDFILE -H 34954  -l lanbridge -i wl0 -A -m 4 -w 2  -g 3600 -k $PSK_KEY -s $SSID
+
+OpenWrt's NAS arguments: -P /var/run/nas.$ifname.pid -H 34954 -i $ifname $nas_mode -m $auth -w $wsec -s \"\$${vif}_ssid\" -g 3600 -F $nasopts"
+
+1. http://www.bingner.com/openwrt/wpa.html
+
+Option  Description
+-P      File to write PID of running nas process to, generally "/tmp/nas.lan.pid"
+-l      Logical interface, or "bridged" interface. Usually "br0"
+-H      UDP Port to listen for requests from nas4not etc on, use "34954"
+-i      Hardware wireless interface. "eth1" on WRT54G/GS
+-A      Authenticator Mode, mututally exclusive of -S. This option is used more often, you probably want it
+-S      Supplicant Mode, mutually exclusive of -A
+-m      WPA mode - 0=RADIUS, 1=WPA and 2=WPA+PSK - WPA+PSK is most widely used
+-k      Preshared Key - used to authenticate clients in WPA+PSK mode, or to RADIUS server in RADIUS mode
+-s      SSID of wireless network, if you don't know what this is give up...
+-w      Crypto algorithm to use. 2=TKIP, 4=AES, 6=AES+TKIP - TKIP is most widely supported
+-g      Rekey Interval - Generally 3600
+-h      RADIUS Server IP Address - used only in RADIUS mode
+-p      RADIUS Server Port Number - used only in RADIUS mode
+
+2. http://wiki.openwrt.org/doc/howto/clientmode
+
+       -l    LAN interface name
+       -i    Wireless interface name
+       -k    WPA share-key
+       -m    2 - WPA
+             4 - PSK
+             32 - 802.1X
+             64 - WPA2
+             66 - WPA WPA2
+             128 - PSK2
+             132 - PSK PSK2
+       -g    WPA GTK rotation interval
+       -h    RADIUS server IP address
+       -r    RADIUS secret
+       -p    RADIUS server authentication UDP port
+       -s    SSID
+       -w    1 - WEP
+             2 - TKIP
+             4 - AES
+             6 - AES+TKIP
+       -P    nas pid file
+       -I    WEP key index
+       -K    WEP share key
+       -H    UDP port on which to listen to requests
+       -t    ??????
+
+The -l option must be present first and then followed by -i ��뀦 options for each wireless interface
+On "Supplicant"/"Client" side -l option can't be used.
+-S|-A = Authenticator (NAS) or Supplicant 
+
+3. old options
+
+-p PID
+-H UDP port to listen for requests
+-l LAN interface name
+-i Wireless interface name
+-A Authenticator
+-m           2 - WPA
+              4 - PSK
+              32 - 802.1X
+              64 - WPA2
+              66 - WPA WPA2
+              128 - PSK2
+              132 - PSK PSK2  
+-w            1 - WEP
+              2 - TKIP
+              4 - AES
+              6 - AES+TKIP
+-s SSID
+-g WPA GTK rotation interval
+-k WPA share-key
+

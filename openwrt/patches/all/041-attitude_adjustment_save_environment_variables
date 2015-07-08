@@ -1,0 +1,20 @@
+--- openwrt/Makefile.org	2010-01-24 18:57:24.720963292 +0100
++++ openwrt/Makefile	2010-01-24 19:29:28.751015782 +0100
+@@ -72,8 +72,16 @@
+ # check prerequisites before starting to build
+ prereq: $(target/stamp-prereq) tmp/.prereq_packages
+ 
++con:
++	echo "OPENWRT_BIN_DIR=$(BIN_DIR)" > $(TOPDIR)/.openwrt_env
++	echo "OPENWRT_PACKAGE_DIR=$(PACKAGE_DIR)" >> $(TOPDIR)/.openwrt_env
++	echo "OPENWRT_TMP_DIR=$(TMP_DIR)" >> $(TOPDIR)/.openwrt_env
++	#
++	# LINUX_VERSION is saved from include/kernel-defaults.mk
++	#
++
+ prepare: .config $(tools/stamp-install) $(toolchain/stamp-install)
+-world: prepare $(target/stamp-compile) $(package/stamp-cleanup) $(package/stamp-compile) $(package/stamp-install) $(package/stamp-rootfs-prepare) $(target/stamp-install) FORCE
++world: con prepare $(target/stamp-compile) $(package/stamp-cleanup) $(package/stamp-compile) $(package/stamp-install) $(package/stamp-rootfs-prepare) $(target/stamp-install) con FORCE
+ 	$(_SINGLE)$(SUBMAKE) -r package/index
+ 
+ # update all feeds, re-create index files, install symlinks

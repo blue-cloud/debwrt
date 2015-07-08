@@ -1,0 +1,64 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+#
+
+# Uncomment this to turn on verbose mode.
+export DH_VERBOSE=1
+
+
+config.status: configure
+	dh_testdir
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	touch configure-stamp
+
+build: build-stamp
+build-stamp:  config.status 
+	dh_testdir
+	touch $@
+
+clean: 
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp 
+	#dpatch deapply-all
+	-patch -f -R -p1 <debian/patches/120-add_if_vlan.h.patch
+
+	# Add here commands to clean up after the build process.
+	-[ -f Makefile ] && $(MAKE) distclean
+	rm -f config.sub config.guess
+
+	dh_clean 
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k 
+	dh_installdirs
+
+	# Add here commands to install the package into debian/tmp
+	$(MAKE) prefix=$(CURDIR)/debian/tmp/usr install
+	#ln -s $(CURDIR)/debian/tmp/usr/lib/libnl.so.1 $(CURDIR)/debian/tmp/usr/lib/libnl.so
+
+# Build architecture-independent files here.
+binary-indep: build install
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_install
+	dh_link
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install 

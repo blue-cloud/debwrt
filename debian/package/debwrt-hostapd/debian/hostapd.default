@@ -1,0 +1,21 @@
+# Defaults for hostapd initscript
+
+# Uncomment the following line to run hostapd on startup
+# WARNING! Depending on your configuration,
+#          you may lose access via your wireless interface.
+#
+RUN_DAEMON="yes"
+
+# Uncomment the following line, and provide the absolute
+# path to one or more configuration files to be used by the
+# hostapd daemon. If left commented, the daemon will use
+# /etc/hostapd/hostapd.conf
+#
+DAEMON_CONF="/etc/hostapd/hostapd-nokey.conf"
+
+# Additional daemon options
+#       -d   show more debug messages (-dd for even more)
+#       -K   include key data in debug messages
+#       -t   include timestamps in some debug messages
+#
+#DAEMON_OPTS="-dd"

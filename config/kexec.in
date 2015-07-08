@@ -1,0 +1,80 @@
+config KEXEC
+    bool "Enalable kexec function call"
+    depends BOOT_METHOD_SCRIPT
+    default y
+config PACKAGE_block-mount
+    bool "PACKAGE_block-mount"
+    depends BOOT_METHOD_SCRIPT
+    default y
+config PACKAGE_busybox
+    bool "PACKAGE_busybox"
+    depends BOOT_METHOD_SCRIPT
+    default y
+config PACKAGE_hotplug2
+    bool "PACKAGE_hotplug2"
+    depends BOOT_METHOD_SCRIPT
+    default y
+config PACKAGE_libc
+    bool "PACKAGE_libc"
+    depends BOOT_METHOD_SCRIPT
+    default y
+config PACKAGE_libgcc
+    bool "PACKAGE_libgcc"
+    depends BOOT_METHOD_SCRIPT
+    default y
+config PACKAGE_libpthread
+    bool "PACKAGE_libpthread"
+    depends BOOT_METHOD_SCRIPT
+    default y
+config PACKAGE_mtd
+    bool "PACKAGE_mtd"
+    depends BOOT_METHOD_SCRIPT
+    default y
+config PACKAGE_nvram
+    bool "PACKAGE_nvram"
+    depends BOOT_METHOD_SCRIPT
+    default y
+config PACKAGE_libblkid
+    bool "PACKAGE_libblkid"
+    depends BOOT_METHOD_SCRIPT
+    default y
+config PACKAGE_libcom_err
+    bool "PACKAGE_libcom_err"
+    depends BOOT_METHOD_SCRIPT
+    default y
+config PACKAGE_libext2fs
+    bool "PACKAGE_libext2fs"
+    depends BOOT_METHOD_SCRIPT
+    default y
+config PACKAGE_libuuid
+    bool "PACKAGE_libuuid"
+    depends BOOT_METHOD_SCRIPT
+    default y
+config PACKAGE_zlib
+    bool "PACKAGE_zlib"
+    depends BOOT_METHOD_SCRIPT
+    default y
+config PACKAGE_blkid
+    bool "PACKAGE_blkid"
+    depends BOOT_METHOD_SCRIPT
+    default y
+config PACKAGE_e2fsprogs
+    bool "PACKAGE_e2fsprogs"
+    depends BOOT_METHOD_SCRIPT
+    default y
+config PACKAGE_uuidgen
+    bool "PACKAGE_uuidgen"
+    depends BOOT_METHOD_SCRIPT
+    default y
+config PACKAGE_swap-utils
+    bool "PACKAGE_swap-utils"
+    depends BOOT_METHOD_SCRIPT
+    default y
+config PACKAGE_kexec-tools
+    bool "PACKAGE_kexec-tools"
+    depends BOOT_METHOD_SCRIPT
+    default y
+config PACKAGE_mount-utils
+    bool "PACKAGE_mount-utils"
+    depends BOOT_METHOD_SCRIPT
+    default y

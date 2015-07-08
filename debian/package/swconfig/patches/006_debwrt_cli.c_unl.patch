@@ -1,0 +1,11 @@
+--- swconfig-0.1/src/cli.c.org	2011-09-18 17:14:00.112481807 +0000
++++ swconfig-0.1/src/cli.c	2011-09-18 17:13:26.772432908 +0000
+@@ -27,6 +27,8 @@
+ #include <sys/socket.h>
+ /*#include <uci.h>*/
+ 
++#include <unl.h>
++
+ #include <linux/types.h>
+ #include <linux/netlink.h>
+ #include <linux/genetlink.h>

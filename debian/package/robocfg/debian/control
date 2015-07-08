@@ -1,0 +1,21 @@
+Source: robocfg
+Section: net
+Priority: extra
+Maintainer: Amain (DebWrt.net) <amain@debwrt.net>
+Build-Depends: debhelper (>= 7.0.50~)
+Standards-Version: 3.8.4
+
+Package: robocfg
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Description: Hardware configuration of Broadcom BCM5325E/536x VLAN 6-port ethernet switch
+   Robocfg is a utility written by Oleg Vdovikin to enable the hardware configuration of the
+   Broadcom BCM5325E/536x VLAN enabled 6-port ethernet switch. When used properly, it can
+   configure the switch in such a way that enables each of the five exposed ports of the
+   switch to be treated as a separate, individual ethernet interface. Using robocfg, the
+   switch can also be configured to tag packets for use in VLAN enabled networks, and to
+   configure each port's MDI, duplex, and speed settings. Robocfg options can be issued
+   individually, or strung together on one line, each new option and parameter separated by a
+   space. See the bottom of this section for a copy of Robocfg's own stated parameters.
+   .
+   See: http://wiki.openwrt.org/OpenWrtRoboCfg
